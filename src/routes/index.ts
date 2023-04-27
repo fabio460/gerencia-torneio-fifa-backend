@@ -1,0 +1,20 @@
+import { routesType } from "../types"
+import autenticacaoRouter from "./autenticacaoRouter"
+import estatisticaRouter from "./estatisticaRouter"
+import jogadoresRouter from "./jogadoresRouter"
+import pagamentoRouter from "./pagamentosRouter"
+import participantesRouter from "./participantesRouter"
+import principal from "./principal"
+import torneioRouter from "./torneioRouter"
+import usuarioRouter from "./usuarioRouter"
+
+export const routes:routesType[] = [
+   {endpoint:"/",route:principal},
+   {endpoint:"/usuario",route:usuarioRouter},
+   {endpoint:"/torneio",route:torneioRouter},
+   {endpoint:"/participantes",route:participantesRouter},
+   {endpoint:"/jogadores",route:jogadoresRouter},
+   {endpoint:"/estatistica",route:estatisticaRouter},
+   {endpoint:"/pagamentos", route:pagamentoRouter},
+   {endpoint:"/autenticacao", route:autenticacaoRouter},
+]

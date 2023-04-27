@@ -1,0 +1,60 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  nome String
+  senha String
+  torneio Torneio[]
+}
+
+model Torneio{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idUsuario String @db.ObjectId
+  nome String
+  participantes Participantes[]
+  usuario Usuario @relation(fields: [idUsuario],references: [id], onDelete: Cascade, onUpdate: Cascade) 
+}
+
+model Participantes {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+  saldo Float?
+  time String?
+  idTorneio String @db.ObjectId
+  torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jogadores Jogadores[]
+}
+
+model Jogadores{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+  imagemDoJogador String
+  nacionalidade String
+  imagemDaNacionalidade String
+  escudoDoTime String
+  posicao String
+  overall String
+  valorDoJogador String
+  time String
+  liga String
+  linkSoFifa String 
+  idParticipante String @db.ObjectId
+  participantes Participantes @relation(fields: [idParticipante], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Estatistica {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  vencedor String
+  melhorAssistente String
+  artilheiro String
+  data DateTime
+}
