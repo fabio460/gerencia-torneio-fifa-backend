@@ -43,6 +43,7 @@ export const listarPorId = async(req:Request, res: Response)=>{
  }
 export const criar =async (req:Request, res: Response)=>{
     const {nome, email, senha} = req.body
+    console.log({email,nome,senha})
     try {
        await prisma.usuario.create({
            data:{
@@ -51,11 +52,28 @@ export const criar =async (req:Request, res: Response)=>{
             senha
            },
         })
-        res.json("usuário criado com sucesso!")
+        res.status(200).json("usuário criado com sucesso!")
     } catch (error) {
-        res.status(401).json({erro:"falha ao criar usuario", motivo: error})
+        res.status(402).json({erro:"falha ao criar usuario", motivo: error})
     }
 }
+
+export const cadastrar = async (req:Request, res: Response)=>{
+  const {nome, email, senha} = req.body
+  try {
+    await prisma.usuario.create({
+        data:{
+         nome,
+         email,
+         senha
+        },
+     })
+     res.status(200).json("usuário criado com sucesso!")
+ } catch (error) {
+     res.status(402).json({erro:"falha ao criar usuario", motivo: error})
+ }
+}
+
 export const atualizar = async(req:Request, res: Response)=>{
     const {nome, email, senha} = req.body
     const id = req.params.id

@@ -40,6 +40,7 @@ export const criar = async(req:Request, res: Response)=>{
     try {
         const {idParticipante, jogador} = req.body
         const j:jogadoresType = jogador
+        console.log({idParticipante, jogador})
         await prisma.jogadores.create({
            data:{
                escudoDoTime:j.escudoDoTime,
@@ -59,7 +60,7 @@ export const criar = async(req:Request, res: Response)=>{
        res.json("jogador adicionado com sucesso")
         
     } catch (error) {
-        res.status(401).json({falha:"falha ao adicionar jogador",error})
+        res.status(400).json({falha:"falha ao adicionar jogador",motivo:error})
     }
 }
 export const atualizar = async(req:Request, res: Response)=>{
