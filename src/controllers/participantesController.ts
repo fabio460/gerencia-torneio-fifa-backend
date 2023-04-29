@@ -47,7 +47,7 @@ export const criar = async(req:Request, res: Response)=>{
                   id:idTorneio
                 }
             },
-            
+            saldo:100000
           },
           select:{
             id:true
@@ -81,6 +81,7 @@ export const criar = async(req:Request, res: Response)=>{
 export const atualizar = async(req:Request, res: Response)=>{
     const id = req.params.id
     const {nome, saldo, time} = req.body
+    console.log({nome, saldo, time, id})
     try {
         await prisma.participantes.update({
             where:{
