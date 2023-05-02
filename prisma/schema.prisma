@@ -48,6 +48,7 @@ model Jogadores{
   liga String
   linkSoFifa String 
   idParticipante String @db.ObjectId
+  posicaoNoCampinho PosicaoNoCampinho[]
   participantes Participantes @relation(fields: [idParticipante], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -57,4 +58,12 @@ model Estatistica {
   melhorAssistente String
   artilheiro String
   data DateTime
+}
+
+model PosicaoNoCampinho {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoJogador String @db.ObjectId
+  x Float
+  y Float
+  jogador Jogadores @relation(fields: [idDoJogador], references: [id], onDelete: Cascade, onUpdate:Cascade)
 }

@@ -11,10 +11,17 @@ export interface jogadoresType{
     valorDoJogador: string,
     time: string,
     liga: string,
-    linkSoFifa:string 
+    linkSoFifa:string,
+    posicaoNoCampinho?:posicaoNoCampinhoType  
 }
 export interface routesType{
     endpoint:string,
     route: Router
 }
+
+export type posicaoNoCampinhoType = {
+    idJogador:string,
+    x:number,
+    y:number
+  }
 

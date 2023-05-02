@@ -4,6 +4,7 @@ import estatisticaRouter from "./estatisticaRouter"
 import jogadoresRouter from "./jogadoresRouter"
 import pagamentoRouter from "./pagamentosRouter"
 import participantesRouter from "./participantesRouter"
+import posicoesRouter from "./posicaoRouter"
 import principal from "./principal"
 import torneioRouter from "./torneioRouter"
 import usuarioRouter from "./usuarioRouter"
@@ -17,4 +18,5 @@ export const routes:routesType[] = [
    {endpoint:"/estatistica",route:estatisticaRouter},
    {endpoint:"/pagamentos", route:pagamentoRouter},
    {endpoint:"/autenticacao", route:autenticacaoRouter},
+   {endpoint:"/posicoes", route:posicoesRouter},
 ]

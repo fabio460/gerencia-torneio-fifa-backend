@@ -27,7 +27,11 @@ export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
     const p =await prisma.participantes.findUnique({
         include:{
-            jogadores:true
+            jogadores:{
+                include:{
+                    posicaoNoCampinho:true
+                }
+            }
         },
         where:{
             id

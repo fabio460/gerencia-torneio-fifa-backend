@@ -8,6 +8,6 @@ jogadoresRouter.get('/', listar)
 jogadoresRouter.get('/:id', listarPorId)
 jogadoresRouter.post('/', criar)
 jogadoresRouter.put('/:id', atualizar)
-jogadoresRouter.delete('/:id', deletar)
+jogadoresRouter.delete('/', deletar)
 
 export default jogadoresRouter

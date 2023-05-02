@@ -19,7 +19,8 @@ export const listar = async(req:Request, res: Response)=>{
                         }
                     }
                 }
-            }
+            },
+            posicaoNoCampinho:true
         }
     })
     res.json(p)
@@ -28,7 +29,8 @@ export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
     const p = await prisma.jogadores.findUnique({
         include:{
-            participantes:true
+            participantes:true,
+            posicaoNoCampinho:true
         },
         where:{
             id
@@ -96,12 +98,23 @@ export const atualizar = async(req:Request, res: Response)=>{
  export const deletar = async(req:Request, res: Response)=>{
      try {
         const id = req.params.id
-        await prisma.jogadores.delete({
+        const {listaDeIds, saldoAtualizado, idParticipante} = req.body
+        listaDeIds.map(async(e:string)=>{        
+            await prisma.jogadores.delete({
+                where:{
+                    id:e
+                }
+            })
+        })
+        await prisma.participantes.update({
             where:{
-                id
+                id:idParticipante
+            },
+            data:{
+                saldo:saldoAtualizado
             }
         })
-        res.json("jogador deletado com sucesso!")
+         res.json("jogador deletado com sucesso!")
         
     } catch (error) {
         res.status(401).json({falha:"falha ao deletar jogador",error})
