@@ -16,7 +16,10 @@ export const listar = async(req:Request, res: Response)=>{
 }
 export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
-    const p =await prisma.torneio.findMany({
+    const p =await prisma.torneio.findUnique({
+        where:{
+           id
+        },
         include:{
             participantes:true
         }

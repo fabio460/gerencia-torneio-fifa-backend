@@ -1,6 +1,7 @@
 import { Router } from "express"
 
 export interface jogadoresType{
+    id:string,
     nome: string,
     imagemDoJogador: string,
     nacionalidade?: string,

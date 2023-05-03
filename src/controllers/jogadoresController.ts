@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
 import { jogadoresType } from "../types"
+import { transferenciaMonetaria } from "../metodosUteis"
 const prisma = new PrismaClient()
 
 export const listar = async(req:Request, res: Response)=>{
@@ -93,9 +94,61 @@ export const criar = async(req:Request, res: Response)=>{
     }
 }
 export const atualizar = async(req:Request, res: Response)=>{
-    res.json()
+    const {idDoProprietario, idDoComprador, idsDosJogadoresSelecionados} = req.body
+    try {
+        const resposta = await transferenciaMonetaria(idDoProprietario, idDoComprador, idsDosJogadoresSelecionados)
+        if (resposta) {
+            idsDosJogadoresSelecionados.map(async (ids:string)=>{
+                await prisma.participantes.update({
+                    where:{
+                        id:idDoComprador,
+                    },
+                    data:{
+                        jogadores:{
+                            connect:{
+                                id:ids
+                            },
+                            
+                        }
+                    }
+                })
+            })
+            res.json("transferência comcluida com sucesso")
+        }else{
+            res.json("transferência não efetuado pois o comprador não possui saldo suficiente!")
+        }
+        
+    } catch (error) {
+        res.status(400).json({falha:"falha ao transferir jogador", motivo:error})
+    }
 }
- export const deletar = async(req:Request, res: Response)=>{
+
+export const transferenciaDeJogador = async(req:Request, res: Response)=>{
+    const {idDoProprietario, idDoComprador, idDoJogador} = req.body
+    res.json('fabio')
+    try {
+        await prisma.participantes.update({
+            where:{
+                id:idDoProprietario,
+            },
+            data:{
+                jogadores:{
+                    disconnect:{
+                        id:idDoJogador
+                    },
+                    connect:{
+                        id:idDoComprador
+                    }
+                }
+            }
+        })
+        res.json("transferência comcluida com sucesso")
+        
+    } catch (error) {
+        res.status(400).json({falha:"falha ao transferir jogador", motivo:error})
+    }
+}
+export const deletar = async(req:Request, res: Response)=>{
      try {
         const id = req.params.id
         const {listaDeIds, saldoAtualizado, idParticipante} = req.body
