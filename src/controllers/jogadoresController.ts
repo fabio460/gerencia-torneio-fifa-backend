@@ -39,6 +39,19 @@ export const listarPorId = async(req:Request, res: Response)=>{
     })
     res.json(p)
 }
+
+export const listarPorTorneio = async(req:Request, res: Response)=>{
+    const {idTorneio} = req.body
+    const p = await prisma.jogadores.findMany({
+       where:{
+         participantes:{
+            idTorneio
+         }
+       }
+    })
+    res.json(p)
+}
+
 export const criar = async(req:Request, res: Response)=>{
     try {
         const {idParticipante, jogador} = req.body
@@ -113,7 +126,7 @@ export const atualizar = async(req:Request, res: Response)=>{
                     }
                 })
             })
-            res.json("transferência comcluida com sucesso")
+            res.json("transferência concluida com sucesso")
         }else{
             res.json("transferência não efetuado pois o comprador não possui saldo suficiente!")
         }
