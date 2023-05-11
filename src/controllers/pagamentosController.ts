@@ -30,7 +30,7 @@ export const pagarPremiacao = async(req:Request, res: Response)=>{
                 }
             })
           })
-       res.json(5)
+       res.json("Premiação paga com sucesso!")
     } catch (error) {
         res.status(401).json({erro:"falha ao efetuar premiação", motivo:error})
     }
