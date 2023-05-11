@@ -57,7 +57,7 @@ model Estatistica {
   vencedor String
   melhorAssistente String
   artilheiro String
-  data DateTime
+  data DateTime? @updatedAt
 }
 
 model PosicaoNoCampinho {

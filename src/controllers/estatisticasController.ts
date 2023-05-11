@@ -23,7 +23,6 @@ export const criar = async(req:Request, res: Response)=>{
             artilheiro,
             melhorAssistente,
             vencedor,
-            data
            }
         })
         res.json("Estatistica criada com sucesso")
@@ -62,5 +61,29 @@ export const atualizar = async(req:Request, res: Response)=>{
         })
     } catch (error) {
         res.status(401).json({falha:"Falha ao deletar estatistica", motivo:error})
+    }
+}
+
+export const removerHistorico = async(req:Request, res: Response)=>{
+    
+    try {
+        const ids = await prisma.estatistica.findMany({
+            orderBy:{
+                data:'desc'
+            },
+            select:{
+                id:true
+            },  
+        })
+        ids.map(async (item:any)=>{
+            await prisma.estatistica.delete({
+                where:{
+                    id:item.id
+                }
+            })
+        })
+        res.json("hitórico removido com sucesso")
+    } catch (error) {
+        res.status(401).json({falha:"Falha ao deletar histórico", motivo:error})
     }
 }
