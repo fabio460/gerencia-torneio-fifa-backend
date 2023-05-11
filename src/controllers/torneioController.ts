@@ -73,10 +73,10 @@ export const atualizar = async(req:Request, res: Response)=>{
               nome
             }
         })
-        res.json("torneio deletado com sucesso!")
+        res.json("torneio atualizado com sucesso!")
         
     } catch (error) {
-        res.status(401).json({erro:"falha ao deletar torneio", motivo:error})
+        res.status(401).json({erro:"falha ao atualizar torneio", motivo:error})
     }
 }
  export const deletar = async(req:Request, res: Response)=>{

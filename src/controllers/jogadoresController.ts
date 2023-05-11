@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
 import { jogadoresType } from "../types"
-import { transferenciaMonetaria } from "../metodosUteis"
+import { transferenciaMonetaria, tratarValorDoJogador } from "../metodosUteis"
 const prisma = new PrismaClient()
 
 export const listar = async(req:Request, res: Response)=>{
@@ -27,36 +27,48 @@ export const listar = async(req:Request, res: Response)=>{
     res.json(p)
 }
 export const listarPorId = async(req:Request, res: Response)=>{
-    const id = req.params.id
-    const p = await prisma.jogadores.findUnique({
-        include:{
-            participantes:true,
-            posicaoNoCampinho:true
-        },
-        where:{
-            id
+    try {
+        const id = req.params.id
+        if (id) {            
+            const p = await prisma.jogadores.findUnique({
+                include:{
+                    participantes:true,
+                    posicaoNoCampinho:true
+                },
+                where:{
+                    id
+                }
+            })
+            res.json(p)
         }
-    })
-    res.json(p)
+        
+    } catch (error) {
+        res.status(400).json({falha:"falha ao adicionar jogador",motivo:error})
+    }
 }
 
 export const listarPorTorneio = async(req:Request, res: Response)=>{
-    const {idTorneio} = req.body
-    const p = await prisma.jogadores.findMany({
-       where:{
-         participantes:{
-            idTorneio
-         }
-       }
-    })
-    res.json(p)
+    try {
+        const {idTorneio} = req.body
+        const p = await prisma.jogadores.findMany({
+           where:{
+             participantes:{
+                idTorneio
+             }
+           }
+        })
+        res.json(p)
+        
+    } catch (error) {
+        res.status(400).json({falha:"falha ao adicionar jogador",motivo:error})
+    }
 }
 
 export const criar = async(req:Request, res: Response)=>{
     try {
         const {idParticipante, jogador} = req.body
         const j:jogadoresType = jogador
-        const preco:number = parseFloat(j.valorDoJogador) || 0
+        const preco:number = parseFloat(tratarValorDoJogador(j.valorDoJogador)) || 0
         const saldoObjeto = await prisma.participantes.findUnique({
             where:{
                 id: idParticipante
@@ -72,7 +84,7 @@ export const criar = async(req:Request, res: Response)=>{
             res.json("saldo nulo!")    
         }else{
             if (preco > saldo) {
-                console.log({preco,saldo})
+                console.log({preco,saldo,jogador})
                 res.json("Saldo insuficiente!")
             }else{
                 await prisma.jogadores.create({

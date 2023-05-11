@@ -24,20 +24,25 @@ export const listar = async(req:Request, res: Response)=>{
     res.json(p)
 }
 export const listarPorId = async(req:Request, res: Response)=>{
-    const id = req.params.id
-    const p =await prisma.participantes.findUnique({
-        include:{
-            jogadores:{
-                include:{
-                    posicaoNoCampinho:true
+    try {
+        const id = req.params.id
+        const p =await prisma.participantes.findUnique({
+            include:{
+                jogadores:{
+                    include:{
+                        posicaoNoCampinho:true
+                    }
                 }
+            },
+            where:{
+                id
             }
-        },
-        where:{
-            id
-        }
-    })
-    res.json(p)
+        })
+        res.json(p)
+        
+    } catch (error) {
+        res.status(401).json({erro:"falha ao listar participante", motivo:error})
+    }
  }
 export const criar = async(req:Request, res: Response)=>{
     try {

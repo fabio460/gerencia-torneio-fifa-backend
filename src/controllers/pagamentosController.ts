@@ -5,25 +5,32 @@ import { jogadoresType } from "../types"
 const prisma =new PrismaClient()
 
 export const pagarPremiacao = async(req:Request, res: Response)=>{
-    const {premiados} = req.body
-    const arrayEndividados:{idParticipante:string,debito:number}[] = premiados
     try {
-        arrayEndividados.map(async elem=>{
-            const p = await prisma.participantes.findUnique({
+        const {premiados} = req.body
+        const arrayEndividados:{idParticipante:string,debito:number}[] = premiados
+        var arrayBruto:any = []
+        let saida:any = arrayEndividados.map(async elem=>{
+            let soma = arrayEndividados.reduce((acc, item)=>{
+                return elem.idParticipante === item.idParticipante ? acc + item.debito : acc
+            },0)
+            arrayBruto.push({elem:elem.idParticipante,soma})
+        })
+          
+          const parsed_array = arrayBruto.map((val:any)=>{return JSON.stringify(val)})
+          const filtered_array= parsed_array.filter((value:any, ind:any)=> parsed_array.indexOf(value) == ind).map((val:any)=>{return JSON.parse(val)})
+          filtered_array.map(async(item:any, key:any)=>{
+            return await prisma.participantes.update({
                 where:{
-                    id:elem?.idParticipante
-                }
-            })
-            await prisma.participantes.update({
-                where:{
-                    id: elem?.idParticipante
+                    id:item.elem
                 },
                 data:{
-                    saldo:elem.debito + (p?.saldo || 0)
+                    saldo:{
+                        increment:item.soma
+                    }
                 }
             })
-        })
-        res.json("premiação efetuada com sucesso!")
+          })
+       res.json(5)
     } catch (error) {
         res.status(401).json({erro:"falha ao efetuar premiação", motivo:error})
     }

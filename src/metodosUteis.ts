@@ -55,3 +55,8 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
         return true
     }
 }
+
+export const tratarValorDoJogador = (valor:string | undefined)=>{
+    let valorArray = valor?.split('.') || ''
+    return valorArray[0]
+}
