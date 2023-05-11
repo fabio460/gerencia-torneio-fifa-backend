@@ -18,8 +18,8 @@ export const pagarPremiacao = async(req:Request, res: Response)=>{
           
           const parsed_array = arrayBruto.map((val:any)=>{return JSON.stringify(val)})
           const filtered_array= parsed_array.filter((value:any, ind:any)=> parsed_array.indexOf(value) == ind).map((val:any)=>{return JSON.parse(val)})
-          filtered_array.map(async(item:any, key:any)=>{
-            return await prisma.participantes.update({
+          const resposta = filtered_array.map(async(item:any, key:any)=>{
+            await prisma.participantes.update({
                 where:{
                     id:item.elem
                 },
@@ -29,8 +29,13 @@ export const pagarPremiacao = async(req:Request, res: Response)=>{
                     }
                 }
             })
+            if (key === (filtered_array.length - 1)) {
+                return true
+            }
           })
-       res.json("Premiação paga com sucesso!")
+          if (resposta) {      
+              res.json("Premiação paga com sucesso!")
+          }
     } catch (error) {
         res.status(401).json({erro:"falha ao efetuar premiação", motivo:error})
     }
