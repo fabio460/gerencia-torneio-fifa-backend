@@ -7,11 +7,11 @@ const prisma =new PrismaClient()
 export const pagarPremiacao = async(req:Request, res: Response)=>{
     try {
         const {premiados} = req.body
-        const arrayEndividados:{idParticipante:string,debito:number}[] = premiados
+        const arrayEndividados:{idParticipante:string,premio:number}[] = premiados
         var arrayBruto:any = []
         let saida:any = arrayEndividados.map(async elem=>{
             let soma = arrayEndividados.reduce((acc, item)=>{
-                return elem.idParticipante === item.idParticipante ? acc + item.debito : acc
+                return elem.idParticipante === item.idParticipante ? acc + item.premio : acc
             },0)
             arrayBruto.push({elem:elem.idParticipante,soma})
         })
