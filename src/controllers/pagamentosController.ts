@@ -18,7 +18,7 @@ export const pagarPremiacao = async(req:Request, res: Response)=>{
           
           const parsed_array = arrayBruto.map((val:any)=>{return JSON.stringify(val)})
           const filtered_array= parsed_array.filter((value:any, ind:any)=> parsed_array.indexOf(value) == ind).map((val:any)=>{return JSON.parse(val)})
-          const resposta = filtered_array.map(async(item:any, key:any)=>{
+          const resposta =await filtered_array.map(async(item:any, key:any)=>{
             await prisma.participantes.update({
                 where:{
                     id:item.elem
