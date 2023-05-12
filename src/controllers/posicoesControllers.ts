@@ -97,3 +97,34 @@ export const atualizarOuCriar = async(req:Request, res: Response)=>{
         res.status(401).json({erro:"falha ao deletar posicaoNoCampinho", motivo: error})
     }
 }
+
+export const deletarTodasAsPosicoes = async(req:Request, res: Response)=>{
+    try {
+        const id = req.params.id
+        const arrayIds = await prisma.posicaoNoCampinho.findMany({
+            where:{
+                jogador:{
+                    idParticipante:id
+                }
+            }
+        })
+        arrayIds.map(async(item)=>{
+            return await prisma.posicaoNoCampinho.delete({
+                where:{
+                    id:item.id
+                }
+            })
+        })
+        res.json(arrayIds)
+        // const p =await prisma.posicaoNoCampinho.deleteMany({
+        //    where:{
+        //      jogador:{
+        //         idParticipante:id
+        //      }
+        //    }
+        // })
+        // res.json("Usuário deletado com sucesso!")
+    } catch (error) {
+        res.status(401).json({erro:"falha ao deletar posicaoNoCampinho", motivo: error})
+    }
+}
