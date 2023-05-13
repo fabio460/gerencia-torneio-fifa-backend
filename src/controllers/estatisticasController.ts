@@ -15,6 +15,7 @@ export const listarPorId = async(req:Request, res: Response)=>{
     })
     res.json(e)
 }
+
 export const criar = async(req:Request, res: Response)=>{
     const {artilheiro, melhorAssistente, vencedor, torneioId} = req.body
     try {
