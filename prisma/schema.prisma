@@ -22,6 +22,7 @@ model Torneio{
   nome String
   participantes Participantes[]
   usuario Usuario @relation(fields: [idUsuario],references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  estatistica Estatistica[]
 }
 
 model Participantes {
@@ -58,6 +59,8 @@ model Estatistica {
   melhorAssistente String
   artilheiro String
   data DateTime? @updatedAt
+  torneioId String @db.ObjectId
+  torneio Torneio @relation(fields: [torneioId],references: [id],onDelete:Cascade)
 }
 
 model PosicaoNoCampinho {

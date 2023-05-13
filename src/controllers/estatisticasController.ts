@@ -8,21 +8,22 @@ export const listar = async(req:Request, res: Response)=>{
 }
 export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
-    const e =await prisma.estatistica.findUnique({
+    const e =await prisma.estatistica.findMany({
         where:{
-            id
+          torneioId:id
         }
     })
     res.json(e)
 }
 export const criar = async(req:Request, res: Response)=>{
-    const {artilheiro, melhorAssistente, vencedor, data} = req.body
+    const {artilheiro, melhorAssistente, vencedor, torneioId} = req.body
     try {
        await prisma.estatistica.create({
            data:{
             artilheiro,
             melhorAssistente,
             vencedor,
+            torneioId
            }
         })
         res.json("Estatistica criada com sucesso")
