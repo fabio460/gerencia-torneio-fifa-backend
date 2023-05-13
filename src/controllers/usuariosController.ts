@@ -9,6 +9,7 @@ export const listar =async (req:Request, res: Response)=>{
    })
    res.json(p)
 }
+
 export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
     try {
