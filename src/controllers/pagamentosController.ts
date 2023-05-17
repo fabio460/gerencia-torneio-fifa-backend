@@ -72,7 +72,7 @@ export const pagarFolha = async(req:Request, res: Response)=>{
            })
         })
             
-        res.json("premiação efetuada com sucesso!")
+        res.json("pagamento efetuada com sucesso!")
     } catch (error) {
         res.status(401).json({erro:"falha ao efetuar premiação", motivo:error})
     }
