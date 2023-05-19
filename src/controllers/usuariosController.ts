@@ -29,6 +29,7 @@ export const listarPorId = async(req:Request, res: Response)=>{
                       nome:true,
                       saldo:true,
                       time:true,
+                      emblemaDoTime:true,
                       idTorneio:true,
                       torneio:true,
                       jogadores:{

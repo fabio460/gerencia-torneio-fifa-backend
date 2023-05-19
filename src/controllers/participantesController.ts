@@ -11,7 +11,7 @@ export const listar = async(req:Request, res: Response)=>{
         torneio:{
             select:{
                 idUsuario:true,
-                nome:true,
+                nome:true, 
                 usuario:{
                     select:{
                         nome:true
