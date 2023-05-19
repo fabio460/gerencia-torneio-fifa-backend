@@ -30,6 +30,7 @@ model Participantes {
   nome String
   saldo Float?
   time String?
+  emblemaDoTime String?
   idTorneio String @db.ObjectId
   torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
   jogadores Jogadores[]

@@ -46,7 +46,7 @@ export const listarPorId = async(req:Request, res: Response)=>{
  }
 export const criar = async(req:Request, res: Response)=>{
     try {
-        const {nome, idTorneio, listaDeJogadores} = req.body
+        const {nome, idTorneio, listaDeJogadores, emblemaDoTime, time} = req.body
         let lista:jogadoresType[] = listaDeJogadores
        const p = await prisma.participantes.create({
           data:{
@@ -56,13 +56,15 @@ export const criar = async(req:Request, res: Response)=>{
                   id:idTorneio
                 }
             },
-            saldo:100000
+            saldo:100000,
+            emblemaDoTime,
+            time
           },
           select:{
             id:true
           }
         })
-        if (listaDeJogadores) {         
+        if (lista.length > 0 ) {         
             lista.map(async jog=>{
                await prisma.jogadores.create({
                 data:{
