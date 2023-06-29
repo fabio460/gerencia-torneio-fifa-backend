@@ -56,13 +56,14 @@ model Jogadores{
 
 model Estatistica {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  vencedor String
-  melhorAssistente String
-  artilheiro String
+  vencedor String?
+  assistentes String[]
+  artilheiros String[]
   data DateTime? @updatedAt
   torneioId String @db.ObjectId
   torneio Torneio @relation(fields: [torneioId],references: [id],onDelete:Cascade)
 }
+
 
 model PosicaoNoCampinho {
   id String @id @default(auto()) @map("_id") @db.ObjectId

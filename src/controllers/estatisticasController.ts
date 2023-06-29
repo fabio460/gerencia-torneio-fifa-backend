@@ -17,12 +17,12 @@ export const listarPorId = async(req:Request, res: Response)=>{
 }
 
 export const criar = async(req:Request, res: Response)=>{
-    const {artilheiro, melhorAssistente, vencedor, torneioId} = req.body
+    const {artilheiros, assistentes, vencedor, torneioId} = req.body
     try {
        await prisma.estatistica.create({
            data:{
-            artilheiro,
-            melhorAssistente,
+            artilheiros,
+            assistentes,
             vencedor,
             torneioId
            }
@@ -35,12 +35,12 @@ export const criar = async(req:Request, res: Response)=>{
 }
 export const atualizar = async(req:Request, res: Response)=>{
     const id = req.params.id
-    const {artilheiro, melhorAssistente, vencedor, data} = req.body
+    const {artilheiros, assistentes, vencedor, data} = req.body
     try {
        await prisma.estatistica.update({
             data:{
-             artilheiro,
-             melhorAssistente,
+             artilheiros,
+             assistentes,
              vencedor,
              data
             },
