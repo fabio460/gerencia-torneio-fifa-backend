@@ -8,7 +8,7 @@ export const listar = async(req:Request, res: Response)=>{
 }
 export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
-    const e =await prisma.estatistica.findFirst({
+    const e =await prisma.estatistica.findMany({
         where:{
           torneioId:id
         }
