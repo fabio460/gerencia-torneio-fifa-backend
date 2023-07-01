@@ -119,9 +119,9 @@ export const criar = async(req:Request, res: Response)=>{
     }
 }
 export const atualizar = async(req:Request, res: Response)=>{
-    const {idDoProprietario, idDoComprador, idsDosJogadoresSelecionados} = req.body
+    const {idDoProprietario, idDoComprador, idsDosJogadoresSelecionados, valorDaNegociacao} = req.body
     try {
-        const resposta = await transferenciaMonetaria(idDoProprietario, idDoComprador, idsDosJogadoresSelecionados)
+        const resposta = await transferenciaMonetaria(idDoProprietario, idDoComprador, idsDosJogadoresSelecionados, valorDaNegociacao)
         if (resposta) {
             idsDosJogadoresSelecionados.map(async (ids:string)=>{
                 await prisma.participantes.update({
