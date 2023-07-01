@@ -23,6 +23,7 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
                 }
             }
         })
+        return true
     }else{
         const saldoDoProprietario = await prisma.participantes.findUnique({
             where:{
