@@ -138,7 +138,7 @@ export const atualizar = async(req:Request, res: Response)=>{
                     }
                 })
             })
-            res.json("transferência concluida com sucesso")
+            res.json("transferência concluida com sucesso!!!")
         }else{
             res.json("transferência não efetuado pois o comprador não possui saldo suficiente!")
         }
@@ -150,7 +150,6 @@ export const atualizar = async(req:Request, res: Response)=>{
 
 export const transferenciaDeJogador = async(req:Request, res: Response)=>{
     const {idDoProprietario, idDoComprador, idDoJogador} = req.body
-    res.json('fabio')
     try {
         await prisma.participantes.update({
             where:{
