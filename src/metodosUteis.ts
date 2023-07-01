@@ -3,6 +3,17 @@ const prisma = new PrismaClient()
 
 export async function transferenciaMonetaria(idDoProprietario:string, idDoComprador:string, idsDosJogadoresSelecionados:string[], valorDaNegociacao:number){
     if (valorDaNegociacao) {
+        const saldoDoComprador = await prisma.participantes.findUnique({
+            where:{
+                id:idDoComprador
+            },
+            select:{
+                saldo:true
+            }
+        })
+        if (saldoDoComprador?.saldo && saldoDoComprador.saldo < valorDaNegociacao) {
+            return false
+        }
         await prisma.participantes.update({
             where:{
                 id:idDoProprietario
