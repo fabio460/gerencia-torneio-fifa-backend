@@ -47,7 +47,7 @@ export const  logar = async(req:Request, res:Response)=>{
           }
        }
       })
-      const token = jwt.sign({id:auth?.id},secret,{expiresIn:"30s"})
+      const token = jwt.sign({id:auth?.id},secret,{expiresIn:"1d"})
       if (auth) {
           res.json({auth, token})
       }else{
