@@ -78,13 +78,11 @@ export const criar = async(req:Request, res: Response)=>{
             }
         })
         const saldo = saldoObjeto?.saldo
-        console.log({idParticipante, jogador})
         
         if (!saldo) {
             res.json("saldo nulo!")    
         }else{
             if (preco > saldo) {
-                console.log({preco,saldo,jogador})
                 res.json("Saldo insuficiente!")
             }else{
                 await prisma.jogadores.create({
@@ -148,22 +146,15 @@ export const transferenciaDeJogadores = async(req:Request, res: Response)=>{
     }
 }
 
-export const transferenciaDeJogador = async(req:Request, res: Response)=>{
-    const {idDoProprietario, idDoComprador, idDoJogador} = req.body
+export const transferenciasMonetarias = async(req:Request, res: Response)=>{
+    const {idDoRecebidor, idDoPagador, valor} = req.body
     try {
-        await prisma.participantes.update({
+        const saldoDoComprador = await prisma.participantes.findUnique({
             where:{
-                id:idDoProprietario,
+                id:idDoPagador
             },
-            data:{
-                jogadores:{
-                    disconnect:{
-                        id:idDoJogador
-                    },
-                    connect:{
-                        id:idDoComprador
-                    }
-                }
+            select:{
+                saldo:true
             }
         })
         res.json("transferência comcluida com sucesso")
