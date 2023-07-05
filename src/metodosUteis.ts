@@ -36,14 +36,6 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
         })
         return true
     }else{
-        const saldoDoProprietario = await prisma.participantes.findUnique({
-            where:{
-                id:idDoProprietario
-            },
-            select:{
-                saldo:true
-            }
-        })
         const saldoDoComprador = await prisma.participantes.findUnique({
             where:{
                 id:idDoComprador
@@ -75,7 +67,9 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
                     id:idDoComprador
                 },
                 data:{
-                    saldo: (saldoDoComprador?.saldo || 0) - somaDosValoresDosJogadores
+                    saldo:{
+                        decrement:somaDosValoresDosJogadores
+                    }
                 }
             })
             await prisma.participantes.update({
@@ -83,7 +77,9 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
                     id:idDoProprietario
                 },
                 data:{
-                    saldo: (saldoDoProprietario?.saldo || 0) + somaDosValoresDosJogadores
+                    saldo:{
+                        increment:somaDosValoresDosJogadores
+                    }
                 }
             })
             return true
