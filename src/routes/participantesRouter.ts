@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import { atualizar, criar, deletar, listar, listarPorId } from "../controllers/participantesController";
+import { atualizar, criar, deletar, listar, listarPorId, transferenciasMonetarias } from "../controllers/participantesController";
 import { pagarFolha, pagarPremiacao } from "../controllers/pagamentosController";
 const participantesRouter = Router()
 
@@ -10,5 +10,7 @@ participantesRouter.post('/', criar)
 participantesRouter.put('/premiacoes', pagarPremiacao)
 participantesRouter.put('/pagarFolha',pagarFolha)
 participantesRouter.put('/:id', atualizar)
+participantesRouter.put('/transferenciasMonetarias', transferenciasMonetarias)
+
 participantesRouter.delete('/:id', deletar)
 export default participantesRouter
