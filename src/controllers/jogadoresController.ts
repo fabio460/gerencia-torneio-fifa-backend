@@ -118,7 +118,7 @@ export const criar = async(req:Request, res: Response)=>{
         res.status(400).json({falha:"falha ao adicionar jogador",motivo:error})
     }
 }
-export const atualizar = async(req:Request, res: Response)=>{
+export const transferenciaDeJogadores = async(req:Request, res: Response)=>{
     const {idDoProprietario, idDoComprador, idsDosJogadoresSelecionados, valorDaNegociacao} = req.body
     try {
         const resposta = await transferenciaMonetaria(idDoProprietario, idDoComprador, idsDosJogadoresSelecionados, valorDaNegociacao)
