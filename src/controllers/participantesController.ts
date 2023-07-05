@@ -159,11 +159,11 @@ export const transferenciasMonetarias = async(req:Request, res: Response)=>{
                     }
                 }
             })
-            res.json("transferência comcluida com sucesso")
+            res.json("transferência concluida com sucesso")
         }
         
     } catch (error) {
-        res.status(400).json({falha:"falha ao transferir jogador", motivo:error})
+        res.status(400).json({falha:"falha ao transferir dinheiro", motivo:error})
     }
 }
 
