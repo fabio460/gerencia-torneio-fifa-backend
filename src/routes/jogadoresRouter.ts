@@ -9,7 +9,7 @@ jogadoresRouter.get('/:id', listarPorId)
 jogadoresRouter.post('/porTorneio', listarPorTorneio)
 jogadoresRouter.post('/', criar)
 jogadoresRouter.put('/', transferenciaDeJogadores)
-jogadoresRouter.put('/transferenciaMonetaria', transferenciasMonetarias)
+jogadoresRouter.put('/transferenciasMonetarias', transferenciasMonetarias)
 jogadoresRouter.delete('/', deletar)
 
 export default jogadoresRouter

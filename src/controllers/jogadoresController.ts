@@ -149,15 +149,41 @@ export const transferenciaDeJogadores = async(req:Request, res: Response)=>{
 export const transferenciasMonetarias = async(req:Request, res: Response)=>{
     const {idDoRecebidor, idDoPagador, valor} = req.body
     try {
-        const saldoDoComprador = await prisma.participantes.findUnique({
+        const pagador = await prisma.participantes.findUnique({
             where:{
                 id:idDoPagador
             },
             select:{
-                saldo:true
+                saldo:true,
+                nome:true
             }
         })
-        res.json("transferência comcluida com sucesso")
+        const saldoDoPagador = pagador?.saldo as number
+        if (saldoDoPagador < valor) {
+            res.status(400).json(`O participante ${pagador?.nome} não tem saldo suficiente!`)
+        }else{
+            await prisma.participantes.update({
+                where:{
+                    id:idDoRecebidor
+                },
+                data:{
+                    saldo:{
+                        increment: valor
+                    }
+                }
+            })
+            await prisma.participantes.update({
+                where:{
+                    id:idDoPagador
+                },
+                data:{
+                    saldo:{
+                        decrement: valor
+                    }
+                }
+            })
+            res.json("transferência comcluida com sucesso")
+        }
         
     } catch (error) {
         res.status(400).json({falha:"falha ao transferir jogador", motivo:error})
