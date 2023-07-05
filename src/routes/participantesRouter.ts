@@ -10,7 +10,7 @@ participantesRouter.post('/', criar)
 participantesRouter.put('/premiacoes', pagarPremiacao)
 participantesRouter.put('/pagarFolha',pagarFolha)
 participantesRouter.put('/:id', atualizar)
-participantesRouter.put('/transferenciasMonetarias', transferenciasMonetarias)
+participantesRouter.post('/transferenciasMonetarias', transferenciasMonetarias)
 
 participantesRouter.delete('/:id', deletar)
 export default participantesRouter
