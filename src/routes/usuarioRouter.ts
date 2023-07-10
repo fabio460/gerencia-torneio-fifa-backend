@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Request, Response } from "express";
-import { atualizar, cadastrar, criar, deletar, listar, listarPorId } from "../controllers/usuariosController";
+import { atualizar, cadastrar, criar, deletar, listar, listarPorEmail, listarPorId } from "../controllers/usuariosController";
 const usuarioRouter = Router()
 
 usuarioRouter.get('/', listar)
@@ -9,4 +9,5 @@ usuarioRouter.get('/:id', listarPorId)
 usuarioRouter.post('/', criar)
 usuarioRouter.put('/:id', atualizar)
 usuarioRouter.delete('/:id', deletar)
+usuarioRouter.post('/email',listarPorEmail)
 export default usuarioRouter

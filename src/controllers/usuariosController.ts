@@ -10,6 +10,49 @@ export const listar =async (req:Request, res: Response)=>{
    res.json(p)
 }
 
+
+
+export const listarPorEmail = async(req:Request, res: Response)=>{
+    const {email} = req.body
+    try {
+        const p =await prisma.usuario.findUnique({
+           where:{
+             email
+           },
+           select:{
+            id:true,
+            nome:true,
+            email:true,
+            torneio:{
+             include:{
+                participantes:{
+                   select:{
+                      id:true,
+                      nome:true,
+                      saldo:true,
+                      time:true,
+                      emblemaDoTime:true,
+                      idTorneio:true,
+                      torneio:true,
+                      jogadores:{
+                        include:{
+                            posicaoNoCampinho:true
+                        }
+                      },
+                   }
+                }
+             }
+            }
+         }
+        })
+        res.json(p)
+        
+    } catch (error) {
+        res.status(401).json({erro:"falha ao buscar usuario", motivo: error})
+    }
+ }
+
+
 export const listarPorId = async(req:Request, res: Response)=>{
     const id = req.params.id
     try {
