@@ -12,7 +12,7 @@ export const  autorizacao = async(req:Request, res:Response, next: NextFunction)
    
        if (jwt.verify(header,secret)) {
          
-        res.json(jwt.decode)
+        res.json(jwt.sign)
        }else{
         res.status(401).json("usuário não autenticado")
        }
