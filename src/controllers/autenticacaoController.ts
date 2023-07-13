@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 const prisma = new PrismaClient()
 import dotenv from 'dotenv'
+import { jwtType } from "../types"
 dotenv.config()
 const secret:any = process.env.secretKey
 
@@ -25,11 +26,11 @@ export const  autorizacaoRetificada = async(req:Request, res:Response, next: Nex
       const header:any = req.headers['x-access-token']
       
       if (jwt.verify(header,secret)) {
-       const idUsuarioAutenticado = jwt.decode(header)
+       const idUsuarioAutenticado:any = jwt.decode(header)
        const usuarioAutenticado = await prisma.usuario.findFirst({
    
        })
-       res.json(idUsuarioAutenticado)
+       res.json(idUsuarioAutenticado.id)
       }
   } catch (error) {
      res.status(400).json(null)

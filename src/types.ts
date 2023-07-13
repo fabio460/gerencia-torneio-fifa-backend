@@ -26,3 +26,8 @@ export type posicaoNoCampinhoType = {
     y:number
   }
 
+export type jwtType ={
+    id: string,
+	iat?: number,
+	exp?: number,
+}
