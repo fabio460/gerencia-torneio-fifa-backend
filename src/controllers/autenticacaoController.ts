@@ -20,6 +20,20 @@ export const  autorizacao = async(req:Request, res:Response, next: NextFunction)
    }
 }
 
+export const  autorizacaoRetificada = async(req:Request, res:Response, next: NextFunction)=>{
+   try {
+      const header:any = req.headers['x-access-token']
+  
+      if (jwt.verify(header,secret)) {
+       res.json(jwt.decode(header))
+      }else{
+       res.status(401).json(jwt.decode(header))
+      }
+  } catch (error) {
+     res.status(400).json("não autorizado")
+  }
+}
+
 export const  logar = async(req:Request, res:Response)=>{
    try {      
       const {email, senha} = req.body
