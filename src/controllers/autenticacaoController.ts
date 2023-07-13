@@ -27,10 +27,30 @@ export const  autorizacaoRetificada = async(req:Request, res:Response, next: Nex
       
       if (jwt.verify(header,secret)) {
        const idUsuarioAutenticado:any = jwt.decode(header)
-       const usuarioAutenticado = await prisma.usuario.findFirst({
-   
+       const usuarioAutenticado = await prisma.usuario.findUnique({
+         where:{
+            id:idUsuarioAutenticado.id
+         },
+         select:{
+            id:true,
+            nome:true,
+            email:true,
+            torneio:{
+             include:{
+                participantes:{
+                   select:{
+                      id:true,
+                      nome:true,
+                      saldo:true,
+                      time:true,
+                      jogadores:true
+                   }
+                }
+             }
+            }
+         }
        })
-       res.json(idUsuarioAutenticado.id)
+       res.json(usuarioAutenticado)
       }
   } catch (error) {
      res.status(400).json(null)
