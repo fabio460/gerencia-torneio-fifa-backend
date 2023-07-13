@@ -30,7 +30,7 @@ export const  autorizacaoRetificada = async(req:Request, res:Response, next: Nex
        res.status(401).json(jwt.decode(header))
       }
   } catch (error) {
-     res.status(400).json("não autorizado")
+     res.status(400).json(null)
   }
 }
 
