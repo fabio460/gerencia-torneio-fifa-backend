@@ -23,11 +23,13 @@ export const  autorizacao = async(req:Request, res:Response, next: NextFunction)
 export const  autorizacaoRetificada = async(req:Request, res:Response, next: NextFunction)=>{
    try {
       const header:any = req.headers['x-access-token']
-  
+      
       if (jwt.verify(header,secret)) {
-       res.json(jwt.decode(header))
-      }else{
-       res.status(401).json(jwt.decode(header))
+       const idUsuarioAutenticado = jwt.decode(header)
+       const usuarioAutenticado = await prisma.usuario.findFirst({
+   
+       })
+       res.json(idUsuarioAutenticado)
       }
   } catch (error) {
      res.status(400).json(null)
