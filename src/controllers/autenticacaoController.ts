@@ -11,7 +11,8 @@ export const  autorizacao = async(req:Request, res:Response, next: NextFunction)
        const header:any = req.headers['x-access-token']
    
        if (jwt.verify(header,secret)) {
-        res.json("autorizado")
+         
+        res.json(jwt.decode)
        }else{
         res.status(401).json("usuário não autenticado")
        }
