@@ -178,6 +178,12 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
       idDoTorneio:id
     }
   })  
+
+  await prisma.timesDaRodada.deleteMany({
+    where:{
+      idTorneio:id
+    }
+  })
   res.send("Campeonato deletado com sucesso!")  
   } catch (error) {
     res.json({falha:"Erro ao deletar campeonato", motivo:error})
@@ -252,6 +258,7 @@ export const deletarTabela = async(req:Request, res: Response)=>{
         id
       }
      })
+
      res.json(t)
    } catch (error) {
     res.json(error)
