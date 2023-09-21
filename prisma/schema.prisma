@@ -37,9 +37,6 @@ model Participantes {
   idTorneio String @db.ObjectId
   torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
   jogadores Jogadores[]
-  idRodada String[] @db.ObjectId
-  mandante Rodada[] @relation(name: "mandante",fields: [idRodada], references: [id])
-  visitante Rodada[] @relation(name:"visitante", fields: [idRodada],references: [id])
 }
 
 model Jogadores{
@@ -81,12 +78,19 @@ model PosicaoNoCampinho {
   jogador Jogadores @relation(fields: [idDoJogador], references: [id], onDelete: Cascade, onUpdate:Cascade)
 }
 
+model campeonato {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  status String
+  rodada Rodada[]
+  data  DateTime @updatedAt
+}
+
 model Rodada {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   idDoMandante String[] @db.ObjectId 
   idDoVisitante String[] @db.ObjectId 
-  mandante Participantes[] @relation(name: "mandante",fields: [idDoMandante],references: [id])
-  visitante Participantes[] @relation(name: "visitante", fields: [idDoVisitante], references: [id])
+  mandante TimesDaRodada[] @relation(name: "mandante",fields: [idDoMandante],references: [id])
+  visitante TimesDaRodada[] @relation(name: "visitante", fields: [idDoVisitante], references: [id])
   idCampeonato String @db.ObjectId
   campeonato campeonato? @relation(fields: [idCampeonato], references: [id], onDelete: Cascade)
   golsMandante Int
@@ -95,11 +99,18 @@ model Rodada {
   statusDaRodada String
 }
 
-model campeonato {
+model TimesDaRodada {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  status String
-  rodada Rodada[]
-  data  DateTime @updatedAt
+  idParticipante String
+  nome String
+  saldo Float?
+  time String?
+  emblemaDoTime String?
+  idTorneio String @db.ObjectId
+  idRodada String[] @db.ObjectId
+  mandante Rodada[] @relation(name: "mandante",fields: [idRodada], references: [id])
+  visitante Rodada[] @relation(name:"visitante", fields: [idRodada],references: [id])
+
 }
 
 model tabelaDoCampeonato {
