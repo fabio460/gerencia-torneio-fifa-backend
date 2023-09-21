@@ -65,7 +65,7 @@ export const pagarFolha = async(req:Request, res: Response)=>{
                 id:j?.id
             },
             data:{
-                saldo:(j?.saldo || 0) - (j?.jogadores.reduce((acc, e)=>{
+                saldo:(j?.saldo || 0) - (j?.jogadores.reduce((acc:any, e:any)=>{
                     return acc +( parseFloat(e.valorDoJogador)*0.03)
                 },0) || 0 )
             }
