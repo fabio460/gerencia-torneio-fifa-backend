@@ -7,6 +7,7 @@ import participantesRouter from "./participantesRouter"
 import posicoesRouter from "./posicaoRouter"
 import principal from "./principal"
 import torneioRouter from "./torneioRouter"
+import torneioTipoDoisRouter from "./torneioTipoDoisRouter"
 import usuarioRouter from "./usuarioRouter"
 
 export const routes:routesType[] = [
@@ -19,4 +20,5 @@ export const routes:routesType[] = [
    {endpoint:"/pagamentos", route:pagamentoRouter},
    {endpoint:"/autenticacao", route:autenticacaoRouter},
    {endpoint:"/posicoes", route:posicoesRouter},
+   {endpoint:"/torneioTipoDois",route:torneioTipoDoisRouter}
 ]

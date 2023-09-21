@@ -23,6 +23,9 @@ model Torneio{
   participantes Participantes[]
   usuario Usuario @relation(fields: [idUsuario],references: [id], onDelete: Cascade, onUpdate: Cascade) 
   estatistica Estatistica[]
+  // idJogo String? @db.ObjectId
+  // jogo Jogo? @relation(fields: [idJogo], references: [id])
+
 }
 
 model Participantes {
@@ -34,6 +37,9 @@ model Participantes {
   idTorneio String @db.ObjectId
   torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
   jogadores Jogadores[]
+  idRodada String[] @db.ObjectId
+  mandante Rodada[] @relation(name: "mandante",fields: [idRodada], references: [id])
+  visitante Rodada[] @relation(name:"visitante", fields: [idRodada],references: [id])
 }
 
 model Jogadores{
@@ -51,6 +57,8 @@ model Jogadores{
   linkSoFifa String 
   idParticipante String @db.ObjectId
   posicaoNoCampinho PosicaoNoCampinho[]
+  // idJogo String? @db.ObjectId
+  // jogo Jogo? @relation(fields: [idJogo], references: [id])
   participantes Participantes @relation(fields: [idParticipante], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -72,3 +80,42 @@ model PosicaoNoCampinho {
   y Float
   jogador Jogadores @relation(fields: [idDoJogador], references: [id], onDelete: Cascade, onUpdate:Cascade)
 }
+
+model Rodada {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoMandante String[] @db.ObjectId 
+  idDoVisitante String[] @db.ObjectId 
+  mandante Participantes[] @relation(name: "mandante",fields: [idDoMandante],references: [id])
+  visitante Participantes[] @relation(name: "visitante", fields: [idDoVisitante], references: [id])
+  idCampeonato String @db.ObjectId
+  campeonato campeonato? @relation(fields: [idCampeonato], references: [id], onDelete: Cascade)
+  golsMandante Int
+  golsVisitante Int
+  rodadaDeNumero Int
+  statusDaRodada String
+}
+
+model campeonato {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  status String
+  rodada Rodada[]
+  data  DateTime @updatedAt
+}
+
+model tabelaDoCampeonato {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoTorneio String
+  idDoParticipante String
+  avatar String
+  equipe String
+  pontos Int
+  jogos Int
+  vitorias Int
+  empates Int
+  derrota Int
+  golsPro Int
+  golsContra Int
+  saldoDeGol Int
+} 
+
+

@@ -31,3 +31,25 @@ export type jwtType ={
 	iat?: number,
 	exp?: number,
 }
+export type participantesType = {
+    id: string,
+    jogadores:jogadoresType[],
+    nome: string,
+    saldo: number,
+    time: string,
+    idTorneio: string,
+    torneio: torneioType,
+    emblemaDoTime?: string
+}
+
+export interface torneioType {
+    id: string,
+    idDoUsuario:string,
+    nome:string,
+    participantes:participantesType[]
+ }
+export type golsType = {participante:participantesType, gol:number}
+export type resultadoDaPartidaType= {
+  golCasa:golsType,
+  golFora:golsType
+}
