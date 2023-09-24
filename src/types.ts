@@ -53,3 +53,8 @@ export type resultadoDaPartidaType= {
   golCasa:golsType,
   golFora:golsType
 }
+
+export type rodadasType = {
+        casa: string;
+        visitante: string;
+}
