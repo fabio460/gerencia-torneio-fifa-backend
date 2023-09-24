@@ -55,6 +55,6 @@ export type resultadoDaPartidaType= {
 }
 
 export type rodadasType = {
-        casa: string;
-        visitante: string;
+        casa: participantesType;
+        visitante: participantesType;
 }
