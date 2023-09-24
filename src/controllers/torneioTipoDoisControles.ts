@@ -102,49 +102,47 @@ export const gerarTorneio = async(req:Request, res: Response)=>{
       }
     })
     let rodadas = montarTorneio(times,voltas)
+    criarRodadas(rodadas, idDoTorneio)
     criarTabela(times, idDoTorneio.id)
-    rodadas.map(async(rodada, key)=>{
-      await prisma.rodada.create({
-        data:{
-          rodadaDeNumero:key + 1,
-          golsMandante:0,
-          golsVisitante:0,
-          campeonato:{
-            connect:{
-              id:idDoTorneio.id
-            }
-          },
-          statusDaRodada:"aberto",   
-          mandante:{
-            create:{
-                idParticipante:rodada.casa.id,
-                idTorneio:idDoTorneio.id,
-                nome:rodada.casa.nome,
-                emblemaDoTime:rodada.casa.emblemaDoTime,
-                saldo:rodada.casa.saldo,
-                time:rodada.casa.time,
-            }
-          },
-          visitante:{
-            create:{
-                idParticipante:rodada.visitante.id,
-                idTorneio:idDoTorneio.id,
-                nome:rodada.visitante.nome,
-                emblemaDoTime:rodada.visitante.emblemaDoTime,
-                saldo:rodada.visitante.saldo,
-                time:rodada.visitante.time
-            }
-          },
-        }
-      })
-    })
     res.json("torneio criado com sucesso!")
   } catch (error) {
     res.json({falha:"Falha ao criar campeonato!",motivo:error})   
   }
 }
+export const criarRodadas = (rodadas:any, idDoTorneio:any)=>{
+  rodadas.map(async(rodada:any, key:any)=>{
+    await prisma.rodada.create({
+      data:{
+        rodadaDeNumero:key + 1,
+        golsMandante:0,
+        golsVisitante:0,
+        idCampeonato:rodada.id,
+        statusDaRodada:"aberto",   
+        mandante:{
+          create:{
+              idParticipante:rodada.casa.id,
+              idTorneio:idDoTorneio?.id,
+              nome:rodada.casa.nome,
+              emblemaDoTime:rodada.casa.emblemaDoTime,
+              saldo:rodada.casa.saldo,
+              time:rodada.casa.time,
+          }
+        },
+        visitante:{
+          create:{
+              idParticipante:rodada.visitante.id,
+              idTorneio:idDoTorneio.id,
+              nome:rodada.visitante.nome,
+              emblemaDoTime:rodada.visitante.emblemaDoTime,
+              saldo:rodada.visitante.saldo,
+              time:rodada.visitante.time
+          }
+        },
+      }
+    })
+  })
+}
 export const criarTabela = async(times:participantesType[], idDoTorneio:string)=>{
-  
   times.map(async(t)=>{
     await prisma.tabelaDoCampeonato.create({
       data:{
@@ -178,6 +176,7 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
       idDoTorneio:id
     }
   })  
+  
 
   await prisma.timesDaRodada.deleteMany({
     where:{
