@@ -102,8 +102,8 @@ export const gerarTorneio = async(req:Request, res: Response)=>{
       }
     })
     let rodadas = montarTorneio(times,voltas)
-    criarTabela(times, idDoTorneio.id)
     criarRodadas(idDoTorneio.id, rodadas)
+    criarTabela(times, idDoTorneio.id)
     // rodadas.map(async(rodada, key)=>{
     //   await prisma.rodada.create({
     //     data:{
