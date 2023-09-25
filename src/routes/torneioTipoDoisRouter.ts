@@ -8,7 +8,7 @@ torneioTipoDoisRouter.get('/listarCampeonato/:id', listarCampeonato)
 torneioTipoDoisRouter.post('/gerarTorneio', gerarTorneio)
 torneioTipoDoisRouter.put('/atualizarRodada', atualizarRodada)
 torneioTipoDoisRouter.delete('/deletarCampeonato/:id', deletarCampeonato)
-torneioTipoDoisRouter.get("/listarTabela", listarTabela)
+torneioTipoDoisRouter.get("/listarTabela/:id", listarTabela)
 
 torneioTipoDoisRouter.put("/atualizarTabela", atualizarTabela)
 torneioTipoDoisRouter.delete("/deletarTabela/:id", deletarTabela)

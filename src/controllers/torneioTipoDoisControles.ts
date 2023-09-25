@@ -6,7 +6,7 @@ const prisma =new PrismaClient()
 export const listarCampeonato = async(req:Request, res: Response)=>{
   const idTorneio = req.params.id
   try {
-      const resposta = await prisma.campeonato.findMany({
+      const resposta = await prisma.campeonato.findFirst({
         where:{
           idTorneio
         },
@@ -108,7 +108,7 @@ export const gerarTorneio = async(req:Request, res: Response)=>{
     })
     let rodadas = montarTorneio(times,voltas)
     criarRodadas(idDoCampeonato.id, rodadas)
-    criarTabela(times, idDoCampeonato.id)
+    criarTabela(times, idTorneio)
     res.json("torneio criado com sucesso!")
   } catch (error) {
     res.json({falha:"Falha ao criar campeonato!",motivo:error})   
@@ -219,8 +219,12 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 
 
 export const listarTabela = async(req:Request, res: Response)=>{
+  const idTorneio = req.params.id
   try {
-     const t = await prisma.tabelaDoCampeonato.findMany({
+     const t = await prisma.tabelaDoCampeonato.findFirst({
+      where:{
+        idDoTorneio:idTorneio
+      },
       orderBy:[
         {
           pontos:"desc"
@@ -246,7 +250,8 @@ export const listarTabela = async(req:Request, res: Response)=>{
         {
           saldoDeGol:"desc"
         }
-      ]
+      ],
+      
      })
      res.json(t)
    } catch (error) {
