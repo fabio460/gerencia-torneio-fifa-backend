@@ -4,8 +4,12 @@ import { participantesType, rodadasType } from "../types"
 const prisma =new PrismaClient()
 
 export const listarCampeonato = async(req:Request, res: Response)=>{
+  const idTorneio = req.params.id
   try {
       const resposta = await prisma.campeonato.findMany({
+        where:{
+          idTorneio
+        },
         include:{
           rodada:{
             select:{

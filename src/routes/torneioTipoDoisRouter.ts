@@ -4,7 +4,7 @@ import { atualizarRodada, atualizarTabela, criarTabela, deletarCampeonato, delet
 const torneioTipoDoisRouter = Router()
 
 torneioTipoDoisRouter.get('/rodadas', listarRodadas)
-torneioTipoDoisRouter.get('/listarCampeonato', listarCampeonato)
+torneioTipoDoisRouter.get('/listarCampeonato/:id', listarCampeonato)
 torneioTipoDoisRouter.post('/gerarTorneio', gerarTorneio)
 torneioTipoDoisRouter.put('/atualizarRodada', atualizarRodada)
 torneioTipoDoisRouter.delete('/deletarCampeonato/:id', deletarCampeonato)
