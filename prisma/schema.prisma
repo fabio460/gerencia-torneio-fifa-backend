@@ -23,8 +23,7 @@ model Torneio{
   participantes Participantes[]
   usuario Usuario @relation(fields: [idUsuario],references: [id], onDelete: Cascade, onUpdate: Cascade) 
   estatistica Estatistica[]
-  // idJogo String? @db.ObjectId
-  // jogo Jogo? @relation(fields: [idJogo], references: [id])
+  campeonato campeonato[]
 
 }
 
@@ -83,6 +82,8 @@ model campeonato {
   status String
   rodada Rodada[]
   data  DateTime @updatedAt
+  idTorneio String @db.ObjectId
+  torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Rodada {
