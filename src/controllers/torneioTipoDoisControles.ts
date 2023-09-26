@@ -221,7 +221,7 @@ export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   
   await prisma.rodada.update({
     where:{id},
-    data:{statusDaRodada}
+    data:{statusDaRodada, golsMandante:0, golsVisitante:0}
   })
   correcao.map(async(dado:any)=>{
     await prisma.tabelaDoCampeonato.updateMany({
@@ -240,6 +240,7 @@ export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
       }
     })
   })
+
 }
 
 
