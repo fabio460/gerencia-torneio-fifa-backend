@@ -117,6 +117,7 @@ model TimesDaRodada {
 model tabelaDoCampeonato {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   idDoTorneio String
+  idDoCampeonato String
   idDoParticipante String
   avatar String
   equipe String

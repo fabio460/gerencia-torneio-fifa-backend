@@ -108,7 +108,7 @@ export const gerarTorneio = async(req:Request, res: Response)=>{
     })
     let rodadas = montarTorneio(times,voltas)
     criarRodadas(idDoCampeonato.id, rodadas)
-    criarTabela(times, idTorneio)
+    criarTabela(times, idTorneio, idDoCampeonato.id)
     res.json("torneio criado com sucesso!")
   } catch (error) {
     res.json({falha:"Falha ao criar campeonato!",motivo:error})   
@@ -147,7 +147,7 @@ export const criarRodadas = (idCampeonato:string, rodadas:rodadasType[])=>{
     })
   })
 }
-export const criarTabela = async(times:participantesType[], idDoTorneio:string)=>{
+export const criarTabela = async(times:participantesType[], idDoTorneio:string, idDoCampeonato:string)=>{
   times.map(async(t)=>{
     await prisma.tabelaDoCampeonato.create({
       data:{
@@ -162,7 +162,8 @@ export const criarTabela = async(times:participantesType[], idDoTorneio:string)=
         jogos:0,
         pontos:0,
         saldoDeGol:0,
-        idDoTorneio:idDoTorneio
+        idDoTorneio:idDoTorneio,
+        idDoCampeonato
       }
     }) 
   })
@@ -178,7 +179,7 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
     })
   await prisma.tabelaDoCampeonato.deleteMany({
     where:{
-      idDoTorneio:id
+      idDoCampeonato:id
     }
   })  
   
@@ -215,13 +216,21 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
   }
 }
 
+export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
+  const {id, statusDaRodada} = req.body
+  console.log({id, statusDaRodada})
+  await prisma.rodada.update({
+    where:{id},
+    data:{statusDaRodada}
+  })
+}
 
 
 
 export const listarTabela = async(req:Request, res: Response)=>{
   const idTorneio = req.params.id
   try {
-     const t = await prisma.tabelaDoCampeonato.findFirst({
+     const t = await prisma.tabelaDoCampeonato.findMany({
       where:{
         idDoTorneio:idTorneio
       },
@@ -276,10 +285,30 @@ export const deletarTabela = async(req:Request, res: Response)=>{
 
 export const atualizarTabela = async(req:Request, res: Response)=>{
   
-  const {resultado } = req.body
+  const {resultado, correcao } = req.body
   console.log(resultado)
   
   try {
+    if (correcao) {      
+      correcao.map(async(dado:any)=>{
+        await prisma.tabelaDoCampeonato.updateMany({
+          where:{
+           idDoParticipante:dado.idDoParticipante
+          },
+          data:{
+           derrota:{decrement:dado.derrota},
+           empates:{decrement:dado.empates},
+           golsContra:{decrement:dado.golsContra},
+           saldoDeGol:{decrement:dado.saldoDeGol},
+           golsPro:{decrement:dado.golsPro},
+           jogos:{decrement:dado.jogos},
+           pontos:{decrement:dado.pontos},
+           vitorias:{decrement:dado.vitorias}
+          }
+        })
+      })
+    }
+
     resultado.map(async(dado:any)=>{
       await prisma.tabelaDoCampeonato.updateMany({
         where:{
