@@ -217,11 +217,28 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 }
 
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
-  const {id, statusDaRodada} = req.body
-  console.log({id, statusDaRodada})
+  const {id, statusDaRodada, correcao} = req.body
+  
   await prisma.rodada.update({
     where:{id},
     data:{statusDaRodada}
+  })
+  correcao.map(async(dado:any)=>{
+    await prisma.tabelaDoCampeonato.updateMany({
+      where:{
+       idDoParticipante:dado.idDoParticipante
+      },
+      data:{
+       derrota:{decrement:dado.derrota},
+       empates:{decrement:dado.empates},
+       golsContra:{decrement:dado.golsContra},
+       saldoDeGol:{decrement:dado.saldoDeGol},
+       golsPro:{decrement:dado.golsPro},
+       jogos:{decrement:dado.jogos},
+       pontos:{decrement:dado.pontos},
+       vitorias:{decrement:dado.vitorias}
+      }
+    })
   })
 }
 
@@ -286,28 +303,9 @@ export const deletarTabela = async(req:Request, res: Response)=>{
 export const atualizarTabela = async(req:Request, res: Response)=>{
   
   const {resultado, correcao } = req.body
-  console.log(resultado)
+  
   
   try {
-    if (correcao) {      
-      correcao.map(async(dado:any)=>{
-        await prisma.tabelaDoCampeonato.updateMany({
-          where:{
-           idDoParticipante:dado.idDoParticipante
-          },
-          data:{
-           derrota:{decrement:dado.derrota},
-           empates:{decrement:dado.empates},
-           golsContra:{decrement:dado.golsContra},
-           saldoDeGol:{decrement:dado.saldoDeGol},
-           golsPro:{decrement:dado.golsPro},
-           jogos:{decrement:dado.jogos},
-           pontos:{decrement:dado.pontos},
-           vitorias:{decrement:dado.vitorias}
-          }
-        })
-      })
-    }
 
     resultado.map(async(dado:any)=>{
       await prisma.tabelaDoCampeonato.updateMany({
