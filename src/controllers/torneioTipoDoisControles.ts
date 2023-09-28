@@ -53,8 +53,10 @@ export const listarCampeonato = async(req:Request, res: Response)=>{
 export const getCampeonatoPorParticipante = async(req:Request, res: Response)=>{
    const {id} = req.body
    try {
-     const campeonato = await prisma.campeonato.findMany({
-   
+     const campeonato = await prisma.campeonato.findFirst({
+      where:{
+        idTorneio:id
+      }
      })
      res.json(campeonato)
     
