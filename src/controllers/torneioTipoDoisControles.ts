@@ -43,10 +43,26 @@ export const listarCampeonato = async(req:Request, res: Response)=>{
           }
         }
       })
+
       res.json(resposta)
     } catch (error) {
       res.status(400).json({falha:"Erro ao ler os dados", motivo:error})
     }
+}
+
+export const getCampeonatoPorParticipante = async(req:Request, res: Response)=>{
+   const {id} = req.body
+   try {
+     const campeonato = await prisma.campeonato.findFirstOrThrow({
+      where:{
+        idTorneio:id
+      }
+     })
+     res.json(campeonato)
+    
+   } catch (error) {
+     res.json(null)
+   }
 }
 
 export const listarRodadas = async(req:Request, res: Response)=>{
