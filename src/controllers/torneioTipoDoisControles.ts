@@ -187,25 +187,23 @@ export const criarTabela = async(times:participantesType[], idDoTorneio:string, 
 export const deletarCampeonato = async(req:Request, res: Response)=>{
   const id = req.params.id
   try {
- 
-  const resposta =  await prisma.campeonato.delete({
+    await prisma.campeonato.delete({
+        where:{
+          id
+        }
+    })
+    await prisma.tabelaDoCampeonato.deleteMany({
       where:{
-        id
+        idDoCampeonato:id
+      }
+    })  
+    
+    await prisma.timesDaRodada.deleteMany({
+      where:{
+        idTorneio:id
       }
     })
-  await prisma.tabelaDoCampeonato.deleteMany({
-    where:{
-      idDoCampeonato:id
-    }
-  })  
-  
-
-  await prisma.timesDaRodada.deleteMany({
-    where:{
-      idTorneio:id
-    }
-  })
-  res.send("Campeonato deletado com sucesso!")  
+    res.send("Campeonato deletado com sucesso!")  
   } catch (error) {
     res.json({falha:"Erro ao deletar campeonato", motivo:error})
   }
@@ -213,7 +211,6 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
 
 export const atualizarRodada = async(req:Request, res: Response)=>{
   const {id,golsMandante, golsVisitante} = req.body
- 
   try {
     await prisma.rodada.update({
       where:{

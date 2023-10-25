@@ -11,7 +11,7 @@ export async function transferenciaMonetaria(idDoProprietario:string, idDoCompra
                 saldo:true
             }
         })
-        if (saldoDoComprador?.saldo && saldoDoComprador.saldo < valorDaNegociacao) {
+        if (saldoDoComprador?.saldo && (saldoDoComprador.saldo as number) < valorDaNegociacao) {
             return false
         }
         await prisma.participantes.update({

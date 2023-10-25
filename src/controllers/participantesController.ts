@@ -79,7 +79,7 @@ export const criar = async(req:Request, res: Response)=>{
                     posicao:jog.posicao,
                     time:jog.time,
                     valorDoJogador:jog.valorDoJogador || "0",
-                    idParticipante:p.id
+                    idParticipante:p.id as string
                 }
                })
             })

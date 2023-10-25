@@ -5,26 +5,31 @@ import { transferenciaMonetaria, tratarValorDoJogador } from "../metodosUteis"
 const prisma = new PrismaClient()
 
 export const listar = async(req:Request, res: Response)=>{
-    const p = await prisma.jogadores.findMany({
-        include:{
-            participantes:{
-                include:{
-                    torneio:{
-                        select:{
-                            usuario:{
-                                select:{
-                                    nome:true
-                                }
-                            },
-                            nome:true
+    try {
+        const p = await prisma.jogadores.findMany({
+            include:{
+                participantes:{
+                    include:{
+                        torneio:{
+                            select:{
+                                usuario:{
+                                    select:{
+                                        nome:true
+                                    }
+                                },
+                                nome:true
+                            }
                         }
                     }
-                }
-            },
-            posicaoNoCampinho:true
-        }
-    })
-    res.json(p)
+                },
+                posicaoNoCampinho:true
+            }
+        })
+        res.json(p)
+        
+    } catch (error) {
+        res.json(error)
+    }
 }
 export const listarPorId = async(req:Request, res: Response)=>{
     try {
@@ -82,7 +87,7 @@ export const criar = async(req:Request, res: Response)=>{
         if (!saldo) {
             res.json("saldo nulo!")    
         }else{
-            if (preco > saldo) {
+            if (preco > (saldo as number)) {
                 res.json("Saldo insuficiente!")
             }else{
                 await prisma.jogadores.create({
@@ -106,7 +111,7 @@ export const criar = async(req:Request, res: Response)=>{
                         id:idParticipante
                     },
                     data:{
-                        saldo:saldo - preco
+                        saldo:(saldo as number) - preco
                     }
                 })
                 res.json("jogador comprado com sucesso")

@@ -131,4 +131,20 @@ model tabelaDoCampeonato {
   saldoDeGol Int
 } 
 
-
+model tabelaDeResultados {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    idDoCampeonato String
+    idDoParticipante String
+    usuario String
+    colocacao String
+    premioColocacao Float
+    artilharia String
+    premioArtilharia Float
+    vitorias Int
+    premioVitorias Float
+    empates Int
+    premioEmpates Float
+    gols Int
+    premioGols Float
+    total Float
+}

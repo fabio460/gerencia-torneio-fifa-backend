@@ -47,7 +47,7 @@ export const criar = async(req:Request, res: Response)=>{
                     id:idUsuario
                    },
                    create:{
-                    nome:nomeDoUsuario?.nome || "",
+                    nome:nomeDoUsuario?.nome as string,
                     saldo:0,
                     time:"genérico"
                    }
