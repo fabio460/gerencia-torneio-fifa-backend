@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Request, Response } from "express";
+
 import { criar, deletar, listar, listarPorIdDoCampionato } from "../controllers/tabeladeResultadosController";
 const tabelaDeResultadosRouter = Router()
 
