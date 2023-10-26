@@ -64,7 +64,7 @@ export const listarPorIdDoCampionato = async(req:Request, res: Response)=>{
 
 export const deletar = async(req:Request, res: Response)=>{
     const {id} = req.body
-    const response = await prisma.tabelaDeResultados.deleteMany({
+    const response = await prisma.tabelaDeResultados.delete({
         where:{
             id
         }
