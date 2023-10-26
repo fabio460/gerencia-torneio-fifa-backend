@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { resultadoType } from "../types"
 const prisma = new PrismaClient()
 
+
 export const criar = async(req:Request, res: Response)=>{
    const {tabelaDePremiados} = req.body 
    const tabela:resultadoType[] = tabelaDePremiados
