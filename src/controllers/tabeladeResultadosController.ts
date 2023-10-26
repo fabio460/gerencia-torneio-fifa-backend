@@ -7,10 +7,17 @@ export const criar = async(req:Request, res: Response)=>{
    const {tabelaDePremiados} = req.body 
    const tabela:resultadoType[] = tabelaDePremiados
    try {
+       const idTabelaResultados = await prisma.tabelaDeResultados.create({
+        data:{
+            data: new Date(),
+            idDoCampeonato:tabela[0].beneficiado.idDoCampeonato,
+            idDoTorneio:tabela[0].beneficiado.idDoTorneio
+        }
+       })
        tabela.map(async(dados)=>{
-             await prisma.tabelaDeResultados.create({
+            await prisma.resultados.create({
             data:{
-                idDoCampeonato:dados.beneficiado.idDoCampeonato,
+                idTabelaResultados:idTabelaResultados.id,
                 usuario:dados.beneficiado.equipe,
                 colocacao:dados.Campeoes,
                 premioColocacao:dados.PremioColocacao,
@@ -24,7 +31,8 @@ export const criar = async(req:Request, res: Response)=>{
                 premioGols:dados.Gols,
                 idDoParticipante:dados.beneficiado.idDoParticipante,
                 total:dados.premio
-            }
+            },
+        
            })
        })
        res.json("Tabela criada com sucesso")
@@ -35,22 +43,26 @@ export const criar = async(req:Request, res: Response)=>{
 }
 
 export const listar = async(req:Request, res: Response)=>{
-   const response = await prisma.tabelaDeResultados.findMany()
+   const response = await prisma.tabelaDeResultados.findMany({
+    include:{
+        resultados:true
+    }
+   })
    res.json(response);
 }
 export const listarPorIdDoCampionato = async(req:Request, res: Response)=>{
     const {idDoCampeonato} = req.body
     const response = await prisma.tabelaDeResultados.findMany({
-        where:{
-            idDoCampeonato
-        }
+        // where:{
+        //     idDoCampeonato
+        // }
     })
     res.json(response);
 }
 
 export const deletar = async(req:Request, res: Response)=>{
     const {id} = req.body
-    const response = await prisma.tabelaDeResultados.delete({
+    const response = await prisma.tabelaDeResultados.deleteMany({
         where:{
             id
         }

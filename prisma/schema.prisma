@@ -131,9 +131,8 @@ model tabelaDoCampeonato {
   saldoDeGol Int
 } 
 
-model tabelaDeResultados {
+model Resultados {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    idDoCampeonato String
     idDoParticipante String
     usuario String
     colocacao String
@@ -147,4 +146,14 @@ model tabelaDeResultados {
     gols Int
     premioGols Float
     total Float
+    idTabelaResultados String @db.ObjectId
+    tabelaDeResultado TabelaDeResultados @relation(fields: [idTabelaResultados],references: [id], onDelete: Cascade)
+}
+
+model TabelaDeResultados {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    idDoCampeonato String
+    idDoTorneio String
+    data DateTime @updatedAt
+    resultados Resultados[] 
 }
