@@ -20,6 +20,7 @@ export const criar = async(req:Request, res: Response)=>{
             await prisma.resultados.create({
             data:{
                 idTabelaResultados:idTabelaResultados.id,
+                avatar:dados.beneficiado.avatar,
                 usuario:dados.beneficiado.equipe,
                 colocacao:dados.Campeoes,
                 premioColocacao:dados.PremioColocacao,
@@ -55,9 +56,6 @@ export const listar = async(req:Request, res: Response)=>{
 export const listarPorIdDoCampionato = async(req:Request, res: Response)=>{
     const {idDoCampeonato} = req.body
     const response = await prisma.tabelaDeResultados.findMany({
-        // where:{
-        //     idDoCampeonato
-        // }
     })
     res.json(response);
 }
