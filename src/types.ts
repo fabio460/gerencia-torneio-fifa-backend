@@ -87,4 +87,5 @@ export type resultadoType = {
     }
     idParticipante:string
     premio:number
+    dataDeInicio: string,
   }

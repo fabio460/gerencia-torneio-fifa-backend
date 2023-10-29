@@ -147,6 +147,8 @@ model Resultados {
     gols Int
     premioGols Float
     total Float
+    golsTomados Int?
+    jogos Int?
     idTabelaResultados String @db.ObjectId
     tabelaDeResultado TabelaDeResultados @relation(fields: [idTabelaResultados],references: [id], onDelete: Cascade)
 }
@@ -156,5 +158,6 @@ model TabelaDeResultados {
     idDoCampeonato String
     idDoTorneio String
     data DateTime @updatedAt
+    dataDeInicio String?
     resultados Resultados[] 
 }

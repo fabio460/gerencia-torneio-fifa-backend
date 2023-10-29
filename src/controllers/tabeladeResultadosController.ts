@@ -4,14 +4,13 @@ import { resultadoType } from "../types"
 const prisma = new PrismaClient()
 
 
-
 export const criar = async(req:Request, res: Response)=>{
    const {tabelaDePremiados} = req.body 
    const tabela:resultadoType[] = tabelaDePremiados
-   console.log(tabela)
    try {
        const idTabelaResultados = await prisma.tabelaDeResultados.create({
         data:{
+            dataDeInicio:tabela[0].dataDeInicio,
             data: new Date(),
             idDoCampeonato:tabela[0].beneficiado.idDoCampeonato,
             idDoTorneio:tabela[0].beneficiado.idDoTorneio
@@ -31,6 +30,8 @@ export const criar = async(req:Request, res: Response)=>{
                 premioVitorias:dados.Vitorias,
                 empates:dados.quantEmpates,
                 premioEmpates:dados.Empates,
+                golsTomados:dados.beneficiado.golsContra,
+                jogos:dados.beneficiado.jogos,
                 gols:dados.quantGols,
                 premioGols:dados.Gols,
                 idDoParticipante:dados.beneficiado.idDoParticipante,
