@@ -211,6 +211,7 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
 
 export const atualizarRodada = async(req:Request, res: Response)=>{
   const {id,golsMandante, golsVisitante} = req.body
+  console.log(id,golsMandante, golsVisitante)
   try {
     await prisma.rodada.update({
       where:{
@@ -229,6 +230,41 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
   }
 }
 
+export const atualizarTabela = async(req:Request, res: Response)=>{
+  const {resultado, id,golsMandante, golsVisitante} = req.body
+  try {
+    resultado.map(async(dado:any)=>{
+      await prisma.tabelaDoCampeonato.updateMany({
+        where:{
+         idDoParticipante:dado.idDoParticipante
+        },
+        data:{
+         derrota:{increment:dado.derrota},
+         empates:{increment:dado.empates},
+         golsContra:{increment:dado.golsContra},
+         saldoDeGol:{increment:dado.saldoDeGol},
+         golsPro:{increment:dado.golsPro},
+         jogos:{increment:dado.jogos},
+         pontos:{increment:dado.pontos},
+         vitorias:{increment:dado.vitorias}
+        }
+      })
+    })
+    await prisma.rodada.update({
+      where:{
+        id
+      },
+      data:{
+        golsMandante,
+        golsVisitante,
+        statusDaRodada:"fechado"
+      }
+    })
+    res.json("tabela atualizada com sucesso!") 
+   } catch (error) {
+    res.json(error)
+   }
+}
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   const {id, statusDaRodada, correcao} = req.body
   
@@ -309,36 +345,6 @@ export const deletarTabela = async(req:Request, res: Response)=>{
      })
 
      res.json(t)
-   } catch (error) {
-    res.json(error)
-   }
-}
-
-export const atualizarTabela = async(req:Request, res: Response)=>{
-  
-  const {resultado, correcao } = req.body
-  
-  
-  try {
-
-    resultado.map(async(dado:any)=>{
-      await prisma.tabelaDoCampeonato.updateMany({
-        where:{
-         idDoParticipante:dado.idDoParticipante
-        },
-        data:{
-         derrota:{increment:dado.derrota},
-         empates:{increment:dado.empates},
-         golsContra:{increment:dado.golsContra},
-         saldoDeGol:{increment:dado.saldoDeGol},
-         golsPro:{increment:dado.golsPro},
-         jogos:{increment:dado.jogos},
-         pontos:{increment:dado.pontos},
-         vitorias:{increment:dado.vitorias}
-        }
-      })
-    })
-    res.json("tabela atualizada com sucesso!") 
    } catch (error) {
     res.json(error)
    }
