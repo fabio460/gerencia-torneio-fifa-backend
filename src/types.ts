@@ -82,9 +82,11 @@ export type resultadoType = {
       golsPro:number,
       jogos:number,
       pontos:number,
-      saldoDeGol:number 
-      vitorias:number
+      saldoDeGol:number, 
+      vitorias:number,
     }
+    posicaoDefezaMenosVazada:string,
+    premioDefezaMenosVazada:number
     idParticipante:string
     premio:number
     dataDeInicio: string,

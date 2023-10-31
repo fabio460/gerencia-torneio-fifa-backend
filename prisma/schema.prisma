@@ -147,6 +147,8 @@ model Resultados {
     gols Int
     premioGols Float
     total Float
+    posicaoDefezaMenosVazada String?
+    premioDefezaMenosVazada Float?
     golsTomados Int?
     jogos Int?
     idTabelaResultados String @db.ObjectId

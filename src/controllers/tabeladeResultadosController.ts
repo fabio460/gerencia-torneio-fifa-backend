@@ -7,6 +7,7 @@ const prisma = new PrismaClient()
 export const criar = async(req:Request, res: Response)=>{
    const {tabelaDePremiados} = req.body 
    const tabela:resultadoType[] = tabelaDePremiados
+   console.log(tabela)
    try {
        const idTabelaResultados = await prisma.tabelaDeResultados.create({
         data:{
@@ -35,6 +36,8 @@ export const criar = async(req:Request, res: Response)=>{
                 gols:dados.quantGols,
                 premioGols:dados.Gols,
                 idDoParticipante:dados.beneficiado.idDoParticipante,
+                posicaoDefezaMenosVazada:dados.posicaoDefezaMenosVazada,
+                premioDefezaMenosVazada:dados.premioDefezaMenosVazada,
                 total:dados.premio
             },
         
