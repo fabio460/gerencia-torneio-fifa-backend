@@ -25,7 +25,7 @@ export const listarCampeonato = async(req:Request, res: Response)=>{
                   nome:true,
                   emblemaDoTime:true,
                   time:true,
-                  saldo:true
+                  saldo:true,
                 }
               },
               visitante:{
@@ -82,7 +82,7 @@ export const listarRodadas = async(req:Request, res: Response)=>{
                 nome:true,
                 emblemaDoTime:true,
                 time:true,
-                saldo:true
+                saldo:true,
               },
               where:{
                 nome:"Jose"
@@ -210,8 +210,8 @@ export const deletarCampeonato = async(req:Request, res: Response)=>{
 }
 
 export const atualizarRodada = async(req:Request, res: Response)=>{
-  const {id,golsMandante, golsVisitante} = req.body
-  console.log(id,golsMandante, golsVisitante)
+  const {id,golsMandante, golsVisitante, casa,visitante} = req.body
+  console.log(id,golsMandante, golsVisitante, casa,visitante)
   try {
     await prisma.rodada.update({
       where:{
@@ -231,64 +231,83 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 }
 
 export const atualizarTabela = async(req:Request, res: Response)=>{
-  const {resultado, id,golsMandante, golsVisitante} = req.body
+  const {resultado, id,golsMandante, golsVisitante, rodada} = req.body
+  
   try {
-    resultado.map(async(dado:any)=>{
-      await prisma.tabelaDoCampeonato.updateMany({
-        where:{
-         idDoParticipante:dado.idDoParticipante
-        },
-        data:{
-         derrota:{increment:dado.derrota},
-         empates:{increment:dado.empates},
-         golsContra:{increment:dado.golsContra},
-         saldoDeGol:{increment:dado.saldoDeGol},
-         golsPro:{increment:dado.golsPro},
-         jogos:{increment:dado.jogos},
-         pontos:{increment:dado.pontos},
-         vitorias:{increment:dado.vitorias}
-        }
-      })
-    })
-    await prisma.rodada.update({
+    const status = await prisma.rodada.findUnique({
       where:{
         id
-      },
-      data:{
-        golsMandante,
-        golsVisitante,
-        statusDaRodada:"fechado"
       }
     })
-    res.json("tabela atualizada com sucesso!") 
+    if (status?.statusDaRodada === "fechado") {
+      res.json("Esta rodada já foi atualizada")
+    }else{
+      resultado.map(async(dado:any)=>{
+        await prisma.tabelaDoCampeonato.updateMany({
+          where:{
+           idDoParticipante:dado.idDoParticipante
+          },
+          data:{
+           derrota:{increment:dado.derrota},
+           empates:{increment:dado.empates},
+           golsContra:{increment:dado.golsContra},
+           saldoDeGol:{increment:dado.saldoDeGol},
+           golsPro:{increment:dado.golsPro},
+           jogos:{increment:dado.jogos},
+           pontos:{increment:dado.pontos},
+           vitorias:{increment:dado.vitorias}
+          }
+        })
+      })
+      await prisma.rodada.update({
+        where:{
+          id
+        },
+        data:{
+          golsMandante,
+          golsVisitante,
+          statusDaRodada:"fechado"
+        }
+      })
+      res.json("tabela atualizada com sucesso") 
+    }
    } catch (error) {
     res.json(error)
    }
 }
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   const {id, statusDaRodada, correcao} = req.body
-  
-  await prisma.rodada.update({
-    where:{id},
-    data:{statusDaRodada, golsMandante:0, golsVisitante:0}
+  const status = await prisma.rodada.findUnique({
+    where:{
+      id
+    }
   })
-  correcao.map(async(dado:any)=>{
-    await prisma.tabelaDoCampeonato.updateMany({
-      where:{
-       idDoParticipante:dado.idDoParticipante
-      },
-      data:{
-       derrota:{decrement:dado.derrota},
-       empates:{decrement:dado.empates},
-       golsContra:{decrement:dado.golsContra},
-       saldoDeGol:{decrement:dado.saldoDeGol},
-       golsPro:{decrement:dado.golsPro},
-       jogos:{decrement:dado.jogos},
-       pontos:{decrement:dado.pontos},
-       vitorias:{decrement:dado.vitorias}
-      }
+  if (status?.statusDaRodada !== "fechado") {
+    res.json("Esta rodada já foi desfeita!")
+  }else{
+    await prisma.rodada.update({
+      where:{id},
+      data:{statusDaRodada, golsMandante:0, golsVisitante:0}
     })
-  })
+    correcao.map(async(dado:any)=>{
+      await prisma.tabelaDoCampeonato.updateMany({
+        where:{
+         idDoParticipante:dado.idDoParticipante
+        },
+        data:{
+         derrota:{decrement:dado.derrota},
+         empates:{decrement:dado.empates},
+         golsContra:{decrement:dado.golsContra},
+         saldoDeGol:{decrement:dado.saldoDeGol},
+         golsPro:{decrement:dado.golsPro},
+         jogos:{decrement:dado.jogos},
+         pontos:{decrement:dado.pontos},
+         vitorias:{decrement:dado.vitorias}
+        }
+      })
+    })
+    res.json("Rodada desfeita com sucesso!")
+  }
 
 }
 

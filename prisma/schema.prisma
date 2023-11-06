@@ -111,7 +111,7 @@ model TimesDaRodada {
   idRodada String[] @db.ObjectId
   mandante Rodada[] @relation(name: "mandante",fields: [idRodada], references: [id])
   visitante Rodada[] @relation(name:"visitante", fields: [idRodada],references: [id])
-
+   
 }
 
 model tabelaDoCampeonato {
