@@ -234,34 +234,43 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
   const {resultado, id,golsMandante, golsVisitante, rodada} = req.body
 
   try {
-    resultado.map(async(dado:any)=>{
-      await prisma.tabelaDoCampeonato.updateMany({
-        where:{
-         idDoParticipante:dado.idDoParticipante
-        },
-        data:{
-         derrota:{increment:dado.derrota},
-         empates:{increment:dado.empates},
-         golsContra:{increment:dado.golsContra},
-         saldoDeGol:{increment:dado.saldoDeGol},
-         golsPro:{increment:dado.golsPro},
-         jogos:{increment:dado.jogos},
-         pontos:{increment:dado.pontos},
-         vitorias:{increment:dado.vitorias}
-        }
-      })
-    })
-    await prisma.rodada.update({
+    const status = await prisma.rodada.findUnique({
       where:{
         id
-      },
-      data:{
-        golsMandante,
-        golsVisitante,
-        statusDaRodada:"fechado"
       }
     })
-    res.json("tabela atualizada com sucesso") 
+    if (status?.statusDaRodada === "fechado") {
+      res.json("Esta rodada já foi atualizada")
+    }else{
+      resultado.map(async(dado:any)=>{
+        await prisma.tabelaDoCampeonato.updateMany({
+          where:{
+           idDoParticipante:dado.idDoParticipante
+          },
+          data:{
+           derrota:{increment:dado.derrota},
+           empates:{increment:dado.empates},
+           golsContra:{increment:dado.golsContra},
+           saldoDeGol:{increment:dado.saldoDeGol},
+           golsPro:{increment:dado.golsPro},
+           jogos:{increment:dado.jogos},
+           pontos:{increment:dado.pontos},
+           vitorias:{increment:dado.vitorias}
+          }
+        })
+      })
+      await prisma.rodada.update({
+        where:{
+          id
+        },
+        data:{
+          golsMandante,
+          golsVisitante,
+          statusDaRodada:"fechado"
+        }
+      })
+      res.json("tabela atualizada com sucesso") 
+    }
    } catch (error) {
     res.json(error)
    }
