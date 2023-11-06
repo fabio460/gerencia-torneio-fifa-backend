@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.ts",
-    "postinstall": "prisma generate"
+    "start": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,13 +19,13 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@prisma/client": "^5.5.2",
+    "@prisma/client": "^4.8.0",
     "convert-csv-to-json": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.22",
-    "prisma": "^5.5.2"
+    "prisma": "^4.8.0"
   }
 }
