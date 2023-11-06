@@ -232,7 +232,7 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 
 export const atualizarTabela = async(req:Request, res: Response)=>{
   const {resultado, id,golsMandante, golsVisitante, rodada} = req.body
-  
+
   try {
     resultado.map(async(dado:any)=>{
       await prisma.tabelaDoCampeonato.updateMany({
@@ -268,34 +268,28 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
 }
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   const {id, statusDaRodada, correcao} = req.body
-  try {
-    
-    await prisma.rodada.update({
-      where:{id},
-      data:{statusDaRodada, golsMandante:0, golsVisitante:0}
+  
+  await prisma.rodada.update({
+    where:{id},
+    data:{statusDaRodada, golsMandante:0, golsVisitante:0}
+  })
+  correcao.map(async(dado:any)=>{
+    await prisma.tabelaDoCampeonato.updateMany({
+      where:{
+       idDoParticipante:dado.idDoParticipante
+      },
+      data:{
+       derrota:{decrement:dado.derrota},
+       empates:{decrement:dado.empates},
+       golsContra:{decrement:dado.golsContra},
+       saldoDeGol:{decrement:dado.saldoDeGol},
+       golsPro:{decrement:dado.golsPro},
+       jogos:{decrement:dado.jogos},
+       pontos:{decrement:dado.pontos},
+       vitorias:{decrement:dado.vitorias}
+      }
     })
-    await correcao.map(async(dado:any)=>{
-      await prisma.tabelaDoCampeonato.updateMany({
-        where:{
-         idDoParticipante:dado.idDoParticipante
-        },
-        data:{
-         derrota:{decrement:dado.derrota},
-         empates:{decrement:dado.empates},
-         golsContra:{decrement:dado.golsContra},
-         saldoDeGol:{decrement:dado.saldoDeGol},
-         golsPro:{decrement:dado.golsPro},
-         jogos:{decrement:dado.jogos},
-         pontos:{decrement:dado.pontos},
-         vitorias:{decrement:dado.vitorias}
-        }
-      })
-    })
-    res.json("Resultado corrigido")
-
-  } catch (error) {
-    res.json("Esta rodada já foi desfeita por outro usuário!")
-  }
+  })
 
 }
 
