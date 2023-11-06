@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+model Usuario {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  nome String
+  senha String
+  torneio Torneio[]
+}
+
+model Torneio{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idUsuario String @db.ObjectId
+  nome String
+  participantes Participantes[]
+  usuario Usuario @relation(fields: [idUsuario],references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  estatistica Estatistica[]
+  campeonato campeonato[]
+
+}
+
+model Participantes {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+  saldo Float?
+  time String?
+  emblemaDoTime String?
+  idTorneio String @db.ObjectId
+  torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jogadores Jogadores[]
+}
+
+model Jogadores{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  nome String
+  imagemDoJogador String
+  nacionalidade String
+  imagemDaNacionalidade String
+  escudoDoTime String
+  posicao String
+  overall String
+  valorDoJogador String
+  time String
+  liga String
+  linkSoFifa String 
+  idParticipante String @db.ObjectId
+  posicaoNoCampinho PosicaoNoCampinho[]
+  // idJogo String? @db.ObjectId
+  // jogo Jogo? @relation(fields: [idJogo], references: [id])
+  participantes Participantes @relation(fields: [idParticipante], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Estatistica {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  vencedor String?
+  assistentes String[]
+  artilheiros String[]
+  data DateTime? @updatedAt
+  torneioId String @db.ObjectId
+  torneio Torneio @relation(fields: [torneioId],references: [id],onDelete:Cascade)
+}
+
+
+model PosicaoNoCampinho {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoJogador String @db.ObjectId
+  x Float
+  y Float
+  jogador Jogadores @relation(fields: [idDoJogador], references: [id], onDelete: Cascade, onUpdate:Cascade)
+}
+
+model campeonato {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  status String
+  rodada Rodada[]
+  data  DateTime @updatedAt
+  idTorneio String @db.ObjectId
+  torneio Torneio @relation(fields: [idTorneio], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Rodada {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoMandante String[] @db.ObjectId 
+  idDoVisitante String[] @db.ObjectId 
+  mandante TimesDaRodada[] @relation(name: "mandante",fields: [idDoMandante],references: [id])
+  visitante TimesDaRodada[] @relation(name: "visitante", fields: [idDoVisitante], references: [id])
+  idCampeonato String @db.ObjectId
+  campeonato campeonato? @relation(fields: [idCampeonato], references: [id], onDelete: Cascade)
+  golsMandante Int
+  golsVisitante Int
+  rodadaDeNumero Int
+  statusDaRodada String
+}
+
+model TimesDaRodada {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idParticipante String
+  nome String
+  saldo Float?
+  time String?
+  emblemaDoTime String?
+  idTorneio String @db.ObjectId
+  idRodada String[] @db.ObjectId
+  mandante Rodada[] @relation(name: "mandante",fields: [idRodada], references: [id])
+  visitante Rodada[] @relation(name:"visitante", fields: [idRodada],references: [id])
+   
+}
+
+model tabelaDoCampeonato {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idDoTorneio String
+  idDoCampeonato String
+  idDoParticipante String
+  avatar String
+  equipe String
+  pontos Int
+  jogos Int
+  vitorias Int
+  empates Int
+  derrota Int
+  golsPro Int
+  golsContra Int
+  saldoDeGol Int
+} 
+
+model Resultados {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    avatar String
+    idDoParticipante String
+    usuario String
+    colocacao String
+    premioColocacao Float
+    artilharia String
+    premioArtilharia Float
+    vitorias Int
+    premioVitorias Float
+    empates Int
+    premioEmpates Float
+    gols Int
+    premioGols Float
+    total Float
+    posicaoDefezaMenosVazada String?
+    premioDefezaMenosVazada Float?
+    golsTomados Int?
+    jogos Int?
+    idTabelaResultados String @db.ObjectId
+    tabelaDeResultado TabelaDeResultados @relation(fields: [idTabelaResultados],references: [id], onDelete: Cascade)
+}
+
+model TabelaDeResultados {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    idDoCampeonato String
+    idDoTorneio String
+    data DateTime @updatedAt
+    dataDeInicio String?
+    resultados Resultados[] 
+}
