@@ -270,8 +270,8 @@ export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   const {id, statusDaRodada, correcao} = req.body
   try {
     
-    await prisma.rodada.updateMany({
-      where:{id,statusDaRodada:'fechado'},
+    await prisma.rodada.update({
+      where:{id},
       data:{statusDaRodada, golsMandante:0, golsVisitante:0}
     })
     correcao.map(async(dado:any)=>{
