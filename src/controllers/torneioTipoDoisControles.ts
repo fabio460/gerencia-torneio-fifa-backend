@@ -234,59 +234,44 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
   const {resultado, id,golsMandante, golsVisitante, rodada} = req.body
   
   try {
-    const status = await prisma.rodada.findUnique({
-      where:{
-        id
-      }
-    })
-    if (status?.statusDaRodada === "fechado") {
-      res.json("Esta rodada já foi atualizada")
-    }else{
-      resultado.map(async(dado:any)=>{
-        await prisma.tabelaDoCampeonato.updateMany({
-          where:{
-           idDoParticipante:dado.idDoParticipante
-          },
-          data:{
-           derrota:{increment:dado.derrota},
-           empates:{increment:dado.empates},
-           golsContra:{increment:dado.golsContra},
-           saldoDeGol:{increment:dado.saldoDeGol},
-           golsPro:{increment:dado.golsPro},
-           jogos:{increment:dado.jogos},
-           pontos:{increment:dado.pontos},
-           vitorias:{increment:dado.vitorias}
-          }
-        })
-      })
-      await prisma.rodada.update({
+    resultado.map(async(dado:any)=>{
+      await prisma.tabelaDoCampeonato.updateMany({
         where:{
-          id
+         idDoParticipante:dado.idDoParticipante
         },
         data:{
-          golsMandante,
-          golsVisitante,
-          statusDaRodada:"fechado"
+         derrota:{increment:dado.derrota},
+         empates:{increment:dado.empates},
+         golsContra:{increment:dado.golsContra},
+         saldoDeGol:{increment:dado.saldoDeGol},
+         golsPro:{increment:dado.golsPro},
+         jogos:{increment:dado.jogos},
+         pontos:{increment:dado.pontos},
+         vitorias:{increment:dado.vitorias}
         }
       })
-      res.json("tabela atualizada com sucesso") 
-    }
+    })
+    await prisma.rodada.update({
+      where:{
+        id
+      },
+      data:{
+        golsMandante,
+        golsVisitante,
+        statusDaRodada:"fechado"
+      }
+    })
+    res.json("tabela atualizada com sucesso") 
    } catch (error) {
     res.json(error)
    }
 }
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   const {id, statusDaRodada, correcao} = req.body
-  const status = await prisma.rodada.findUnique({
-    where:{
-      id
-    }
-  })
-  if (status?.statusDaRodada !== "fechado") {
-    res.json("Esta rodada já foi desfeita!")
-  }else{
+  try {
+    
     await prisma.rodada.update({
-      where:{id},
+      where:{id,statusDaRodada:'fechado'},
       data:{statusDaRodada, golsMandante:0, golsVisitante:0}
     })
     correcao.map(async(dado:any)=>{
@@ -306,7 +291,10 @@ export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
         }
       })
     })
-    res.json("Rodada desfeita com sucesso!")
+    res.json("Resultado corrigido")
+
+  } catch (error) {
+    res.json("Esta rodada já foi desfeita por outro usuário!")
   }
 
 }
