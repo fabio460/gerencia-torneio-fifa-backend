@@ -161,3 +161,25 @@ model TabelaDeResultados {
     dataDeInicio String?
     resultados Resultados[] 
 }
+
+model Premiacoes {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    campeao Int 
+    viceCampeao Int?
+    terceiroColocado Int?
+    quartoColocado Int?
+    artilheiro Int? 
+    viceArtilheiro Int?
+    terceiroArtilheiro Int?
+    quartoAtilheiro Int?
+    gols Int?
+    vitoria Int?
+    empates Int?
+    viceAssistencia Int?
+    terceiroAssistencia Int?
+    quartoAssistencia Int?
+    defezaMenosVazada Int? 
+    defezaSegundaMenosVazada Int?
+    defezaTerceiraMenosVazada Int?
+    defezaQuartaMenosVazada Int?
+}

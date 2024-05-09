@@ -5,6 +5,7 @@ import jogadoresRouter from "./jogadoresRouter"
 import pagamentoRouter from "./pagamentosRouter"
 import participantesRouter from "./participantesRouter"
 import posicoesRouter from "./posicaoRouter"
+import premiacoesRouter from "./premiacoesRouter"
 import principal from "./principal"
 import tabelaDeResultadosRouter from "./tabelaResultadosRouter"
 import torneioRouter from "./torneioRouter"
@@ -22,5 +23,6 @@ export const routes:routesType[] = [
    {endpoint:"/autenticacao", route:autenticacaoRouter},
    {endpoint:"/posicoes", route:posicoesRouter},
    {endpoint:"/torneioTipoDois",route:torneioTipoDoisRouter},
-   {endpoint:"/tabelaDeResultados", route:tabelaDeResultadosRouter}
+   {endpoint:"/tabelaDeResultados", route:tabelaDeResultadosRouter},
+   {endpoint:"/premiacoes", route:premiacoesRouter}
 ]
