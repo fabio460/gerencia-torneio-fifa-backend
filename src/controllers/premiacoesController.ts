@@ -7,6 +7,11 @@ export const listar = async(req:Request, res: Response)=>{
       
     })
     res.json(p)
+    try {
+        
+    } catch (error) {
+        
+    }
 }
 export const criar = async(req:Request, res: Response)=>{
     try {

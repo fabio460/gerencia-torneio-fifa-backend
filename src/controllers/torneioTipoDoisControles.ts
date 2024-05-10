@@ -231,7 +231,7 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 }
 
 export const atualizarTabela = async(req:Request, res: Response)=>{
-  const {resultado, id,golsMandante, golsVisitante, rodada} = req.body
+  const {resultado, id,golsMandante, golsVisitante, rodada, idTorneio} = req.body
 
   try {
     const status = await prisma.rodada.findUnique({
@@ -245,7 +245,10 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
       resultado.map(async(dado:any)=>{
         await prisma.tabelaDoCampeonato.updateMany({
           where:{
-           idDoParticipante:dado.idDoParticipante
+           idDoParticipante:dado.idDoParticipante,
+           AND:{
+            idDoTorneio:idTorneio
+           } 
           },
           data:{
            derrota:{increment:dado.derrota},
@@ -269,6 +272,8 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
           statusDaRodada:"fechado"
         }
       })
+      // const tab = await prisma.tabelaDoCampeonato.findMany()
+      // console.log(tab)
       res.json("tabela atualizada com sucesso") 
     }
    } catch (error) {
