@@ -11,6 +11,7 @@ import tabelaDeResultadosRouter from "./tabelaResultadosRouter"
 import torneioRouter from "./torneioRouter"
 import torneioTipoDoisRouter from "./torneioTipoDoisRouter"
 import usuarioRouter from "./usuarioRouter"
+import trocaTorneioRouter from "./trocaTorneioRouter"
 
 export const routes:routesType[] = [
    {endpoint:"/",route:principal},
@@ -24,5 +25,6 @@ export const routes:routesType[] = [
    {endpoint:"/posicoes", route:posicoesRouter},
    {endpoint:"/torneioTipoDois",route:torneioTipoDoisRouter},
    {endpoint:"/tabelaDeResultados", route:tabelaDeResultadosRouter},
-   {endpoint:"/premiacoes", route:premiacoesRouter}
+   {endpoint:"/premiacoes", route:premiacoesRouter},
+   {endpoint:"/trocaDeTorneio",route:trocaTorneioRouter}
 ]

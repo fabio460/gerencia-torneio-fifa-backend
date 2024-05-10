@@ -93,3 +93,8 @@ export const atualizar = async(req:Request, res: Response)=>{
         res.status(401).json({erro:"falha ao deletar torneio", motivo:error})
     }
 }
+
+export const trocarDeTorneio = async (req:Request, res:Response) => {
+    console.log(3)
+    res.send(6)
+}

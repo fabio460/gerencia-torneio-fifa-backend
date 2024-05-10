@@ -5,23 +5,28 @@ import { jogadoresType } from "../types"
 const prisma =new PrismaClient()
 
 export const listar = async(req:Request, res: Response)=>{
-    const p =await prisma.participantes.findMany({
-       include:{
-        jogadores:true,
-        torneio:{
-            select:{
-                idUsuario:true,
-                nome:true, 
-                usuario:{
-                    select:{
-                        nome:true
+    try {
+        
+        const p =await prisma.participantes.findMany({
+           include:{
+            jogadores:true,
+            torneio:{
+                select:{
+                    idUsuario:true,
+                    nome:true, 
+                    usuario:{
+                        select:{
+                            nome:true
+                        }
                     }
                 }
             }
-        }
-       }
-    })
-    res.json(p)
+           }
+        })
+        res.json(p)
+    } catch (error) {
+        res.json(error)
+    }
 }
 export const listarPorId = async(req:Request, res: Response)=>{
     try {
@@ -92,7 +97,6 @@ export const criar = async(req:Request, res: Response)=>{
 export const atualizar = async(req:Request, res: Response)=>{
     const id = req.params.id
     const {nome, saldo, time} = req.body
-    console.log({nome, saldo, time, id})
     try {
         await prisma.participantes.update({
             where:{
@@ -109,6 +113,16 @@ export const atualizar = async(req:Request, res: Response)=>{
         res.status(401).json({erro:"falha ao atualizar participante", motivo:error})
     }
 }
+
+export const mudancaDeTorneio2 = async(req:Request, res: Response)=>{
+    const {idTorneio} = req.body
+    console.log(idTorneio)
+    res.send(idTorneio)
+}
+
+
+
+
  export const deletar = async(req:Request, res: Response)=>{
     const id = req.params.id
     try {
