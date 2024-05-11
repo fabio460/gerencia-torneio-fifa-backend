@@ -232,7 +232,6 @@ export const atualizarRodada = async(req:Request, res: Response)=>{
 
 export const atualizarTabela = async(req:Request, res: Response)=>{
   const {resultado, id,golsMandante, golsVisitante, rodada, idTorneio} = req.body
-
   try {
     const status = await prisma.rodada.findUnique({
       where:{
@@ -246,9 +245,7 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
         await prisma.tabelaDoCampeonato.updateMany({
           where:{
            idDoParticipante:dado.idDoParticipante,
-           AND:{
-            idDoTorneio:idTorneio
-           } 
+           idDoTorneio:idTorneio
           },
           data:{
            derrota:{increment:dado.derrota},
@@ -272,8 +269,6 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
           statusDaRodada:"fechado"
         }
       })
-      // const tab = await prisma.tabelaDoCampeonato.findMany()
-      // console.log(tab)
       res.json("tabela atualizada com sucesso") 
     }
    } catch (error) {
@@ -281,7 +276,7 @@ export const atualizarTabela = async(req:Request, res: Response)=>{
    }
 }
 export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
-  const {id, statusDaRodada, correcao} = req.body
+  const {id, statusDaRodada, correcao, idTorneio} = req.body
   
   await prisma.rodada.update({
     where:{id},
@@ -290,7 +285,8 @@ export const atualizarStatusDaRodada = async(req:Request, res: Response)=>{
   correcao.map(async(dado:any)=>{
     await prisma.tabelaDoCampeonato.updateMany({
       where:{
-       idDoParticipante:dado.idDoParticipante
+       idDoParticipante:dado.idDoParticipante,
+       idDoTorneio:idTorneio
       },
       data:{
        derrota:{decrement:dado.derrota},
