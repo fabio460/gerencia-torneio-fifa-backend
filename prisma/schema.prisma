@@ -168,10 +168,12 @@ model Premiacoes {
     viceCampeao Int?
     terceiroColocado Int?
     quartoColocado Int?
+    quintoColocado Int?
     artilheiro Int? 
     viceArtilheiro Int?
     terceiroArtilheiro Int?
     quartoAtilheiro Int?
+    quintoAtilheiro Int?
     gols Int?
     vitoria Int?
     empates Int?
@@ -182,4 +184,5 @@ model Premiacoes {
     defezaSegundaMenosVazada Int?
     defezaTerceiraMenosVazada Int?
     defezaQuartaMenosVazada Int?
+    defezaQuintaMenosVazada Int?
 }
