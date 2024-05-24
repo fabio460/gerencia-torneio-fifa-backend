@@ -173,7 +173,7 @@ model Premiacoes {
     viceArtilheiro Int?
     terceiroArtilheiro Int?
     quartoAtilheiro Int?
-    quintoAtilheiro Int?
+    quintoArtilheiro Int?
     gols Int?
     vitoria Int?
     empates Int?
