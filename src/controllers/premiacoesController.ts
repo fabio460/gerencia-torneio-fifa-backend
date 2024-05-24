@@ -51,7 +51,6 @@ export const alterar = async(req:Request, res: Response)=>{
                 gols,
                 vitoria
               } = req.body
-              console.log({quintoArtilheiro, quintoColocado, defezaQuintaMenosVazada})
         await prisma.premiacoes.updateMany({
             data:{
                 campeao,
