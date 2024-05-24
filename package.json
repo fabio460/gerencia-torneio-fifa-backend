@@ -19,7 +19,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.0",
     "convert-csv-to-json": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
