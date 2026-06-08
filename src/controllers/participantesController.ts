@@ -96,7 +96,7 @@ export const criar = async(req:Request, res: Response)=>{
 }
 export const atualizar = async(req:Request, res: Response)=>{
     const id = req.params.id
-    const {nome, saldo, time} = req.body
+    const {nome, saldo, time, emblemaDoTime} = req.body
     try {
         await prisma.participantes.update({
             where:{
@@ -105,7 +105,8 @@ export const atualizar = async(req:Request, res: Response)=>{
              data:{
                 nome,
                 saldo,
-                time,  
+                time,
+                emblemaDoTime  
              }
         })
         res.json("participante atualizado com sucesso!")
